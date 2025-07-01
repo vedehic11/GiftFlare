@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Truck, Verified, Play } from 'lucide-react';
+import { Heart, Truck, Verified, Play, Star, MapPin } from 'lucide-react';
 import { Product } from '../types';
 
 interface ProductCardProps {
@@ -15,78 +15,112 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5 }}
-      className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+      whileHover={{ y: -8 }}
+      className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group border border-gray-100"
     >
       {/* Product Image */}
-      <div className="relative">
+      <div className="relative overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-72 object-cover group-hover:scale-110 transition-transform duration-700"
         />
         
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col space-y-2">
+        <div className="absolute top-4 left-4 flex flex-col space-y-2">
           {product.instantDeliveryEligible && (
-            <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full flex items-center space-x-1">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="bg-green-500 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1 shadow-lg"
+            >
               <Truck className="w-3 h-3" />
-              <span>Instant Delivery</span>
-            </span>
+              <span className="font-medium">Instant Delivery</span>
+            </motion.div>
           )}
         </div>
 
         {/* Video Badge */}
         {product.videoUrl && (
-          <div className="absolute top-3 right-3">
-            <div className="bg-black/50 backdrop-blur-sm text-white p-2 rounded-full">
+          <div className="absolute top-4 right-4">
+            <div className="bg-black/60 backdrop-blur-sm text-white p-2.5 rounded-full shadow-lg">
               <Play className="w-4 h-4" />
             </div>
           </div>
         )}
 
         {/* Like Button */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => setIsLiked(!isLiked)}
-          className="absolute bottom-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white transition-colors"
+          className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-all shadow-lg"
         >
           <Heart 
-            className={`w-4 h-4 ${isLiked ? 'text-pink-500 fill-current' : 'text-gray-600'}`} 
+            className={`w-5 h-5 transition-colors ${
+              isLiked ? 'text-pink-500 fill-current' : 'text-gray-600'
+            }`} 
           />
-        </button>
+        </motion.button>
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-semibold text-gray-900 text-lg line-clamp-2">
+      <div className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="font-bold text-gray-900 text-lg line-clamp-2 leading-tight">
             {product.name}
           </h3>
-          <span className="text-xl font-bold text-pink-600">
+          <span className="text-2xl font-bold text-pink-600 ml-2">
             ₹{product.price.toLocaleString()}
           </span>
         </div>
 
-        <div className="flex items-center space-x-2 mb-3">
-          <span className="text-sm text-gray-600">{product.sellerName}</span>
-          <Verified className="w-4 h-4 text-blue-500" />
-          <span className="text-xs text-gray-500">• {product.city}</span>
+        {/* Seller Info */}
+        <div className="flex items-center space-x-2 mb-4">
+          <div className="flex items-center space-x-1">
+            <span className="text-sm font-medium text-gray-700">{product.sellerName}</span>
+            <Verified className="w-4 h-4 text-blue-500" />
+          </div>
+          <span className="text-gray-300">•</span>
+          <div className="flex items-center space-x-1">
+            <MapPin className="w-3 h-3 text-gray-400" />
+            <span className="text-xs text-gray-500">{product.city}</span>
+          </div>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1 mb-4">
+        <div className="flex flex-wrap gap-2 mb-5">
           {product.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="bg-pink-50 text-pink-600 text-xs px-2 py-1 rounded-full"
+              className="bg-pink-50 text-pink-600 text-xs px-3 py-1 rounded-full font-medium"
             >
               #{tag}
             </span>
           ))}
+        </div>
+
+        {/* Rating (Mock) */}
+        <div className="flex items-center space-x-2 mb-5">
+          <div className="flex items-center space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-4 h-4 ${
+                  i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                }`}
+              />
+            ))}
+          </div>
+          <span className="text-sm text-gray-600">(4.8)</span>
+          <span className="text-xs text-gray-400">• 24 reviews</span>
         </div>
 
         {/* Action Button */}
@@ -94,9 +128,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onAddToCart?.(product)}
-          className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 rounded-lg font-medium hover:shadow-md transition-shadow"
+          className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group"
         >
-          Add to Cart
+          <span className="relative z-10">Add to Cart</span>
+          <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </motion.button>
       </div>
     </motion.div>
