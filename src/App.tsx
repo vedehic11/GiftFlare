@@ -13,6 +13,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ShopPage } from './pages/ShopPage';
 import { GiftSuggesterPage } from './pages/GiftSuggesterPage';
+import { HamperBuilderPage } from './pages/HamperBuilderPage';
 import { SellerDashboardPage } from './pages/SellerDashboardPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/shop" element={<ShopPage />} />
                 <Route path="/gift-suggester" element={<GiftSuggesterPage />} />
+                <Route path="/hamper-builder" element={<HamperBuilderPage />} />
                 
                 {/* Protected Routes */}
                 <Route 

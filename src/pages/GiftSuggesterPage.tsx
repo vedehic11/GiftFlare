@@ -83,7 +83,7 @@ export const GiftSuggesterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 pt-8">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 pt-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -91,10 +91,10 @@ export const GiftSuggesterPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="bg-gradient-to-r from-pink-500 to-rose-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <Sparkles className="w-8 h-8 text-white" />
+          <div className="bg-gradient-to-r from-violet-500 to-purple-500 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <Sparkles className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             AI Gift Suggester
           </h1>
           <p className="text-xl text-gray-600">
@@ -103,9 +103,9 @@ export const GiftSuggesterPage: React.FC = () => {
         </motion.div>
 
         {/* Chat Container */}
-        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
           {/* Messages */}
-          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-pink-50/30 to-white">
+          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-violet-50/30 to-white">
             <AnimatePresence>
               {messages.map((message) => (
                 <motion.div
@@ -117,25 +117,25 @@ export const GiftSuggesterPage: React.FC = () => {
                 >
                   <div className={`flex space-x-3 max-w-xs lg:max-w-md ${message.isUser ? 'flex-row-reverse space-x-reverse' : ''}`}>
                     {/* Avatar */}
-                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg ${
                       message.isUser 
-                        ? 'bg-pink-500' 
-                        : 'bg-gradient-to-r from-purple-500 to-pink-500'
+                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500' 
+                        : 'bg-gradient-to-r from-violet-500 to-purple-500'
                     }`}>
                       {message.isUser ? (
-                        <User className="w-4 h-4 text-white" />
+                        <User className="w-5 h-5 text-white" />
                       ) : (
-                        <Bot className="w-4 h-4 text-white" />
+                        <Bot className="w-5 h-5 text-white" />
                       )}
                     </div>
 
                     {/* Message Bubble */}
-                    <div className={`px-4 py-2 rounded-2xl ${
+                    <div className={`px-4 py-3 rounded-2xl shadow-sm ${
                       message.isUser
-                        ? 'bg-pink-500 text-white'
+                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
                         : 'bg-white border border-gray-200 text-gray-900'
                     }`}>
-                      <p className="text-sm">{message.text}</p>
+                      <p className="text-sm leading-relaxed">{message.text}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -150,10 +150,10 @@ export const GiftSuggesterPage: React.FC = () => {
                 className="flex justify-start"
               >
                 <div className="flex space-x-3 max-w-xs lg:max-w-md">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                    <Bot className="w-4 h-4 text-white" />
+                  <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center shadow-lg">
+                    <Bot className="w-5 h-5 text-white" />
                   </div>
-                  <div className="bg-white border border-gray-200 px-4 py-2 rounded-2xl">
+                  <div className="bg-white border border-gray-200 px-4 py-3 rounded-2xl shadow-sm">
                     <div className="flex space-x-1">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -169,14 +169,14 @@ export const GiftSuggesterPage: React.FC = () => {
 
           {/* Suggested Prompts */}
           {messages.length === 1 && (
-            <div className="px-6 py-4 border-t border-gray-100">
-              <p className="text-sm text-gray-600 mb-3">Try asking about:</p>
+            <div className="px-6 py-4 border-t border-gray-100 bg-gray-50">
+              <p className="text-sm text-gray-600 mb-3 font-medium">Try asking about:</p>
               <div className="flex flex-wrap gap-2">
                 {suggestedPrompts.map((prompt, index) => (
                   <button
                     key={index}
                     onClick={() => handlePromptClick(prompt)}
-                    className="bg-pink-50 text-pink-700 px-3 py-1 rounded-full text-sm hover:bg-pink-100 transition-colors"
+                    className="bg-white text-violet-700 px-4 py-2 rounded-xl text-sm hover:bg-violet-50 transition-colors border border-violet-200 font-medium"
                   >
                     {prompt}
                   </button>
@@ -186,7 +186,7 @@ export const GiftSuggesterPage: React.FC = () => {
           )}
 
           {/* Input */}
-          <div className="p-6 border-t border-gray-100">
+          <div className="p-6 border-t border-gray-100 bg-white">
             <div className="flex space-x-4">
               <input
                 type="text"
@@ -194,7 +194,7 @@ export const GiftSuggesterPage: React.FC = () => {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Describe what you're looking for..."
-                className="flex-1 border border-gray-200 rounded-lg px-4 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
                 disabled={isTyping}
               />
               <motion.button
@@ -202,7 +202,7 @@ export const GiftSuggesterPage: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSendMessage}
                 disabled={isTyping || !inputMessage.trim()}
-                className="bg-gradient-to-r from-pink-500 to-rose-500 text-white p-2 rounded-lg hover:shadow-md transition-shadow disabled:opacity-50"
+                className="bg-gradient-to-r from-violet-500 to-purple-500 text-white p-3 rounded-2xl hover:shadow-lg transition-all disabled:opacity-50 shadow-lg"
               >
                 <Send className="w-5 h-5" />
               </motion.button>
@@ -236,9 +236,9 @@ export const GiftSuggesterPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + index * 0.1 }}
-                className="bg-white p-6 rounded-2xl shadow-sm text-center"
+                className="bg-white p-6 rounded-2xl shadow-sm text-center border border-gray-100"
               >
-                <div className="bg-gradient-to-r from-pink-500 to-rose-500 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className="bg-gradient-to-r from-violet-500 to-purple-500 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">

@@ -58,7 +58,7 @@ export const ShopPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 pt-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -66,9 +66,9 @@ export const ShopPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Discover Handmade{' '}
-            <span className="bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
               Treasures
             </span>
           </h1>
@@ -82,17 +82,17 @@ export const ShopPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8 mb-8"
+          className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 mb-8"
         >
           {/* Search Bar */}
-          <div className="relative mb-8">
+          <div className="relative mb-6">
             <Search className="w-6 h-6 text-gray-400 absolute left-4 top-4" />
             <input
               type="text"
               placeholder="Search for products, makers, or categories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all text-lg"
+              className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all text-lg"
             />
           </div>
 
@@ -107,7 +107,7 @@ export const ShopPage: React.FC = () => {
                 <span>Filters</span>
               </button>
               
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 bg-emerald-50 px-3 py-1 rounded-full">
                 {filteredProducts.length} of {approvedProducts.length} products
               </div>
             </div>
@@ -117,7 +117,7 @@ export const ShopPage: React.FC = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
               >
                 <option value="newest">Newest First</option>
                 <option value="price-low">Price: Low to High</option>
@@ -165,7 +165,7 @@ export const ShopPage: React.FC = () => {
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   >
                     {cities.map(city => (
                       <option key={city} value={city}>
@@ -183,7 +183,7 @@ export const ShopPage: React.FC = () => {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   >
                     {categories.map(category => (
                       <option key={category} value={category}>
@@ -204,7 +204,7 @@ export const ShopPage: React.FC = () => {
                       type="checkbox"
                       checked={showInstantDelivery}
                       onChange={(e) => setShowInstantDelivery(e.target.checked)}
-                      className="rounded border-gray-300 text-pink-600 focus:ring-pink-500"
+                      className="rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
                     />
                     <span className="text-sm text-gray-700 font-medium">Instant Delivery Only</span>
                   </label>
@@ -219,7 +219,7 @@ export const ShopPage: React.FC = () => {
                       setSelectedCategory('all');
                       setShowInstantDelivery(false);
                     }}
-                    className="flex items-center space-x-2 text-gray-500 hover:text-pink-600 transition-colors bg-gray-50 px-4 py-3 rounded-xl hover:bg-pink-50"
+                    className="flex items-center space-x-2 text-gray-500 hover:text-emerald-600 transition-colors bg-gray-50 px-4 py-3 rounded-xl hover:bg-emerald-50 w-full justify-center"
                   >
                     <X className="w-4 h-4" />
                     <span className="font-medium">Clear All</span>
@@ -234,7 +234,7 @@ export const ShopPage: React.FC = () => {
         {filteredProducts.length > 0 ? (
           <div className={`grid gap-8 mb-12 ${
             viewMode === 'grid' 
-              ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4' 
               : 'grid-cols-1 lg:grid-cols-2'
           }`}>
             {filteredProducts.map((product, index) => (
@@ -270,7 +270,7 @@ export const ShopPage: React.FC = () => {
                 setSelectedCategory('all');
                 setShowInstantDelivery(false);
               }}
-              className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
             >
               Clear all filters
             </button>
