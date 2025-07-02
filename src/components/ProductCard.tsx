@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Truck, Verified, Play, Star, MapPin } from 'lucide-react';
+import { Heart, Verified, Play, Star, MapPin } from 'lucide-react';
 import { Product } from '../types';
+import { InstantDeliveryBadge, DeliveryTimeEstimate } from './InstantDeliveryBadge';
 
 interface ProductCardProps {
   product: Product;
@@ -29,18 +30,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
-        {/* Badges */}
-        <div className="absolute top-4 left-4 flex flex-col space-y-2">
-          {product.instantDeliveryEligible && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="bg-green-500 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1 shadow-lg"
-            >
-              <Truck className="w-3 h-3" />
-              <span className="font-medium">Instant Delivery</span>
-            </motion.div>
-          )}
+        {/* Instant Delivery Badge */}
+        <div className="absolute top-4 left-4">
+          <InstantDeliveryBadge product={product} />
         </div>
 
         {/* Video Badge */}
@@ -73,7 +65,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           <h3 className="font-bold text-gray-900 text-lg line-clamp-2 leading-tight">
             {product.name}
           </h3>
-          <span className="text-2xl font-bold text-pink-600 ml-2">
+          <span className="text-2xl font-bold text-emerald-600 ml-2">
             ₹{product.price.toLocaleString()}
           </span>
         </div>
@@ -95,12 +87,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           {product.description}
         </p>
 
+        {/* Delivery Time */}
+        <div className="mb-4">
+          <DeliveryTimeEstimate product={product} />
+        </div>
+
         {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-5">
           {product.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="bg-pink-50 text-pink-600 text-xs px-3 py-1 rounded-full font-medium"
+              className="bg-emerald-50 text-emerald-600 text-xs px-3 py-1 rounded-full font-medium"
             >
               #{tag}
             </span>
@@ -128,10 +125,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onAddToCart?.(product)}
-          className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group"
+          className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group"
         >
           <span className="relative z-10">Add to Cart</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </motion.button>
       </div>
     </motion.div>
