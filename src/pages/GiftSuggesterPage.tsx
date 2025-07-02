@@ -83,7 +83,7 @@ export const GiftSuggesterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-50 pt-8">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-pink-50 pt-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -91,7 +91,7 @@ export const GiftSuggesterPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="bg-gradient-to-r from-violet-500 to-purple-500 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+          <div className="bg-gradient-to-r from-rose-500 to-pink-500 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -105,7 +105,7 @@ export const GiftSuggesterPage: React.FC = () => {
         {/* Chat Container */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
           {/* Messages */}
-          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-violet-50/30 to-white">
+          <div className="h-96 overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-rose-50/30 to-white">
             <AnimatePresence>
               {messages.map((message) => (
                 <motion.div
@@ -119,8 +119,8 @@ export const GiftSuggesterPage: React.FC = () => {
                     {/* Avatar */}
                     <div className={`flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg ${
                       message.isUser 
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500' 
-                        : 'bg-gradient-to-r from-violet-500 to-purple-500'
+                        ? 'bg-gradient-to-r from-rose-500 to-pink-500' 
+                        : 'bg-gradient-to-r from-pink-500 to-rose-500'
                     }`}>
                       {message.isUser ? (
                         <User className="w-5 h-5 text-white" />
@@ -132,7 +132,7 @@ export const GiftSuggesterPage: React.FC = () => {
                     {/* Message Bubble */}
                     <div className={`px-4 py-3 rounded-2xl shadow-sm ${
                       message.isUser
-                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'
+                        ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white'
                         : 'bg-white border border-gray-200 text-gray-900'
                     }`}>
                       <p className="text-sm leading-relaxed">{message.text}</p>
@@ -150,7 +150,7 @@ export const GiftSuggesterPage: React.FC = () => {
                 className="flex justify-start"
               >
                 <div className="flex space-x-3 max-w-xs lg:max-w-md">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-to-r from-violet-500 to-purple-500 flex items-center justify-center shadow-lg">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 flex items-center justify-center shadow-lg">
                     <Bot className="w-5 h-5 text-white" />
                   </div>
                   <div className="bg-white border border-gray-200 px-4 py-3 rounded-2xl shadow-sm">
@@ -176,7 +176,7 @@ export const GiftSuggesterPage: React.FC = () => {
                   <button
                     key={index}
                     onClick={() => handlePromptClick(prompt)}
-                    className="bg-white text-violet-700 px-4 py-2 rounded-xl text-sm hover:bg-violet-50 transition-colors border border-violet-200 font-medium"
+                    className="bg-white text-rose-700 px-4 py-2 rounded-xl text-sm hover:bg-rose-50 transition-colors border border-rose-200 font-medium"
                   >
                     {prompt}
                   </button>
@@ -194,7 +194,7 @@ export const GiftSuggesterPage: React.FC = () => {
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Describe what you're looking for..."
-                className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                className="flex-1 border border-gray-200 rounded-2xl px-4 py-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all"
                 disabled={isTyping}
               />
               <motion.button
@@ -202,7 +202,7 @@ export const GiftSuggesterPage: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleSendMessage}
                 disabled={isTyping || !inputMessage.trim()}
-                className="bg-gradient-to-r from-violet-500 to-purple-500 text-white p-3 rounded-2xl hover:shadow-lg transition-all disabled:opacity-50 shadow-lg"
+                className="bg-gradient-to-r from-rose-500 to-pink-500 text-white p-3 rounded-2xl hover:shadow-lg transition-all disabled:opacity-50 shadow-lg"
               >
                 <Send className="w-5 h-5" />
               </motion.button>
@@ -238,7 +238,7 @@ export const GiftSuggesterPage: React.FC = () => {
                 transition={{ delay: 0.5 + index * 0.1 }}
                 className="bg-white p-6 rounded-2xl shadow-sm text-center border border-gray-100"
               >
-                <div className="bg-gradient-to-r from-violet-500 to-purple-500 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <div className="bg-gradient-to-r from-rose-500 to-pink-500 w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">

@@ -32,7 +32,7 @@ export const InstantDeliveryBadge: React.FC<InstantDeliveryBadgeProps> = ({
     <motion.div
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
-      className={`bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1 shadow-lg ${className}`}
+      className={`bg-gradient-to-r from-rose-500 to-pink-500 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1 shadow-lg ${className}`}
     >
       <Truck className="w-3 h-3" />
       <span className="font-medium">Instant Delivery</span>

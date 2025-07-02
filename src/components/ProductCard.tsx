@@ -53,7 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         >
           <Heart 
             className={`w-5 h-5 transition-colors ${
-              isLiked ? 'text-pink-500 fill-current' : 'text-gray-600'
+              isLiked ? 'text-rose-500 fill-current' : 'text-gray-600'
             }`} 
           />
         </motion.button>
@@ -65,7 +65,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           <h3 className="font-bold text-gray-900 text-lg line-clamp-2 leading-tight">
             {product.name}
           </h3>
-          <span className="text-2xl font-bold text-emerald-600 ml-2">
+          <span className="text-2xl font-bold text-rose-600 ml-2">
             ₹{product.price.toLocaleString()}
           </span>
         </div>
@@ -97,7 +97,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           {product.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="bg-emerald-50 text-emerald-600 text-xs px-3 py-1 rounded-full font-medium"
+              className="bg-rose-50 text-rose-600 text-xs px-3 py-1 rounded-full font-medium"
             >
               #{tag}
             </span>
@@ -125,10 +125,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onAddToCart?.(product)}
-          className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group"
+          className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group"
         >
           <span className="relative z-10">Add to Cart</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-r from-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </motion.button>
       </div>
     </motion.div>

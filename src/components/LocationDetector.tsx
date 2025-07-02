@@ -38,11 +38,11 @@ export const LocationDetector: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="bg-white rounded-xl shadow-lg border border-gray-200 p-3 flex items-center space-x-2"
         >
-          <MapPin className="w-4 h-4 text-emerald-600" />
+          <MapPin className="w-4 h-4 text-rose-600" />
           <span className="text-sm font-medium text-gray-700">{userCity}</span>
           <button
             onClick={() => setShowLocationModal(true)}
-            className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+            className="text-xs text-rose-600 hover:text-rose-700 font-medium"
           >
             Change
           </button>
@@ -62,7 +62,7 @@ export const LocationDetector: React.FC = () => {
             className="bg-white rounded-2xl p-8 w-full max-w-md"
           >
             <div className="text-center mb-6">
-              <div className="bg-gradient-to-r from-emerald-500 to-teal-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="bg-gradient-to-r from-rose-500 to-pink-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -85,7 +85,7 @@ export const LocationDetector: React.FC = () => {
               whileTap={{ scale: 0.98 }}
               onClick={handleAutoDetect}
               disabled={isLocationLoading}
-              className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 mb-4 flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 mb-4 flex items-center justify-center space-x-2"
             >
               {isLocationLoading ? (
                 <>
@@ -117,7 +117,7 @@ export const LocationDetector: React.FC = () => {
               <select
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
-                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent"
               >
                 <option value="">Choose a city</option>
                 {cities.map(city => (
@@ -138,7 +138,7 @@ export const LocationDetector: React.FC = () => {
               <button
                 onClick={handleManualSelection}
                 disabled={!selectedCity}
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-gradient-to-r from-rose-500 to-pink-500 text-white py-3 px-4 rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Confirm
               </button>
