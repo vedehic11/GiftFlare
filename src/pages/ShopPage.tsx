@@ -58,7 +58,7 @@ export const ShopPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-pink-50 pt-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -68,7 +68,7 @@ export const ShopPage: React.FC = () => {
         >
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             Discover Handmade{' '}
-            <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               Treasures
             </span>
           </h1>
@@ -82,7 +82,7 @@ export const ShopPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-3xl shadow-lg border border-gray-100 p-6 md:p-8 mb-8"
+          className="bg-white rounded-3xl shadow-lg border border-purple-100 p-6 md:p-8 mb-8"
         >
           {/* Search Bar */}
           <div className="relative mb-6">
@@ -92,7 +92,7 @@ export const ShopPage: React.FC = () => {
               placeholder="Search for products, makers, or categories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all text-lg"
+              className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-lg"
             />
           </div>
 
@@ -107,7 +107,7 @@ export const ShopPage: React.FC = () => {
                 <span>Filters</span>
               </button>
               
-              <div className="text-sm text-gray-600 bg-rose-50 px-3 py-1 rounded-full">
+              <div className="text-sm text-gray-600 bg-purple-50 px-3 py-1 rounded-full">
                 {filteredProducts.length} of {approvedProducts.length} products
               </div>
             </div>
@@ -117,7 +117,7 @@ export const ShopPage: React.FC = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                className="border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="newest">Newest First</option>
                 <option value="price-low">Price: Low to High</option>
@@ -165,7 +165,7 @@ export const ShopPage: React.FC = () => {
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     {cities.map(city => (
                       <option key={city} value={city}>
@@ -183,7 +183,7 @@ export const ShopPage: React.FC = () => {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   >
                     {categories.map(category => (
                       <option key={category} value={category}>
@@ -204,7 +204,7 @@ export const ShopPage: React.FC = () => {
                       type="checkbox"
                       checked={showInstantDelivery}
                       onChange={(e) => setShowInstantDelivery(e.target.checked)}
-                      className="rounded border-gray-300 text-rose-600 focus:ring-rose-500"
+                      className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                     />
                     <span className="text-sm text-gray-700 font-medium">Instant Delivery Only</span>
                   </label>
@@ -219,7 +219,7 @@ export const ShopPage: React.FC = () => {
                       setSelectedCategory('all');
                       setShowInstantDelivery(false);
                     }}
-                    className="flex items-center space-x-2 text-gray-500 hover:text-rose-600 transition-colors bg-gray-50 px-4 py-3 rounded-xl hover:bg-rose-50 w-full justify-center"
+                    className="flex items-center space-x-2 text-gray-500 hover:text-purple-600 transition-colors bg-gray-50 px-4 py-3 rounded-xl hover:bg-purple-50 w-full justify-center"
                   >
                     <X className="w-4 h-4" />
                     <span className="font-medium">Clear All</span>
@@ -270,7 +270,7 @@ export const ShopPage: React.FC = () => {
                 setSelectedCategory('all');
                 setShowInstantDelivery(false);
               }}
-              className="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+              className="bg-gradient-to-r from-purple-400 to-pink-400 text-white px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
             >
               Clear all filters
             </button>

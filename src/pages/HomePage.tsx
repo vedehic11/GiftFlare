@@ -15,25 +15,25 @@ export const HomePage: React.FC = () => {
       icon: Heart,
       title: 'Handmade with Love',
       description: 'Every product is crafted by passionate artisans who pour their heart into their work.',
-      color: 'from-rose-500 to-pink-500'
+      color: 'from-purple-400 to-pink-400'
     },
     {
       icon: Truck,
       title: 'Instant Delivery',
       description: 'Get your gifts delivered within hours in supported cities.',
-      color: 'from-rose-400 to-pink-400'
+      color: 'from-blue-400 to-purple-400'
     },
     {
       icon: Users,
       title: 'Support Small Business',
       description: 'Directly support local artisans and small businesses in your community.',
-      color: 'from-pink-500 to-rose-500'
+      color: 'from-pink-400 to-purple-400'
     },
     {
       icon: Award,
       title: 'Verified Makers',
       description: 'All our sellers are verified and committed to quality craftsmanship.',
-      color: 'from-pink-400 to-rose-400'
+      color: 'from-purple-400 to-blue-400'
     }
   ];
 
@@ -53,7 +53,7 @@ export const HomePage: React.FC = () => {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Why Choose{' '}
-              <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 GiftFlare?
               </span>
             </h2>
@@ -73,7 +73,7 @@ export const HomePage: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="text-center p-8 rounded-3xl bg-gradient-to-br from-rose-50 to-pink-50 hover:shadow-xl transition-all duration-300 border border-rose-100"
+                  className="text-center p-8 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 hover:shadow-xl transition-all duration-300 border border-purple-100"
                 >
                   <div className={`bg-gradient-to-r ${feature.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
                     <Icon className="w-8 h-8 text-white" />
@@ -92,7 +92,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Featured Products */}
-      <section id="products-section" className="py-20 bg-gradient-to-br from-rose-50 via-white to-pink-50">
+      <section id="products-section" className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ export const HomePage: React.FC = () => {
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Featured{' '}
-              <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Creations
               </span>
             </h2>
@@ -133,7 +133,7 @@ export const HomePage: React.FC = () => {
           >
             <Link
               to="/shop"
-              className="inline-flex items-center space-x-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all duration-300 group"
+              className="inline-flex items-center space-x-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all duration-300 group"
             >
               <span>Explore All Products</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -151,9 +151,9 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-3xl p-8 border border-rose-100"
+              className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 border border-purple-100"
             >
-              <div className="bg-gradient-to-r from-rose-500 to-pink-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+              <div className="bg-gradient-to-r from-purple-400 to-pink-400 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
                 <Gift className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -165,7 +165,7 @@ export const HomePage: React.FC = () => {
               </p>
               <Link
                 to="/gift-suggester"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-rose-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-400 to-pink-400 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
               >
                 <span>Try Gift Suggester</span>
                 <ArrowRight className="w-4 h-4" />
@@ -177,9 +177,9 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-pink-50 to-rose-50 rounded-3xl p-8 border border-pink-100"
+              className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-3xl p-8 border border-pink-100"
             >
-              <div className="bg-gradient-to-r from-pink-500 to-rose-500 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+              <div className="bg-gradient-to-r from-pink-400 to-blue-400 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
                 <Package className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -191,7 +191,7 @@ export const HomePage: React.FC = () => {
               </p>
               <Link
                 to="/hamper-builder"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-400 to-blue-400 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
               >
                 <span>Build Your Hamper</span>
                 <ArrowRight className="w-4 h-4" />
@@ -202,7 +202,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-600">
+      <section className="py-20 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -212,21 +212,21 @@ export const HomePage: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to Find the Perfect Gift?
             </h2>
-            <p className="text-xl text-rose-100 mb-8 leading-relaxed">
+            <p className="text-xl text-purple-100 mb-8 leading-relaxed">
               Join thousands of happy customers who've discovered the joy of giving handmade gifts 
               that truly make a difference.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/shop"
-                className="inline-flex items-center space-x-2 bg-white text-rose-600 px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all"
+                className="inline-flex items-center space-x-2 bg-white text-purple-600 px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all"
               >
                 <span>Start Shopping</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center space-x-2 bg-rose-500 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-rose-400 transition-all border-2 border-white/20"
+                className="inline-flex items-center space-x-2 bg-purple-500 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-purple-400 transition-all border-2 border-white/20"
               >
                 <span>Become a Seller</span>
                 <ArrowRight className="w-5 h-5" />
