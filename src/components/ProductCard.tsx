@@ -17,7 +17,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8 }}
-      className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group border border-purple-100"
+      className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group border border-amber-100"
     >
       {/* Product Image */}
       <div className="relative overflow-hidden">
@@ -53,7 +53,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         >
           <Heart 
             className={`w-5 h-5 transition-colors ${
-              isLiked ? 'text-pink-500 fill-current' : 'text-gray-600'
+              isLiked ? 'text-amber-600 fill-current' : 'text-amber-700'
             }`} 
           />
         </motion.button>
@@ -62,10 +62,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
       {/* Product Info */}
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
-          <h3 className="font-bold text-gray-900 text-lg line-clamp-2 leading-tight">
+          <h3 className="font-bold text-amber-900 text-lg line-clamp-2 leading-tight">
             {product.name}
           </h3>
-          <span className="text-2xl font-bold text-purple-600 ml-2">
+          <span className="text-2xl font-bold text-amber-600 ml-2">
             ₹{product.price.toLocaleString()}
           </span>
         </div>
@@ -73,17 +73,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         {/* Seller Info */}
         <div className="flex items-center space-x-2 mb-4">
           <div className="flex items-center space-x-1">
-            <span className="text-sm font-medium text-gray-700">{product.sellerName}</span>
+            <span className="text-sm font-medium text-amber-800">{product.sellerName}</span>
             <Verified className="w-4 h-4 text-blue-500" />
           </div>
-          <span className="text-gray-300">•</span>
+          <span className="text-amber-300">•</span>
           <div className="flex items-center space-x-1">
-            <MapPin className="w-3 h-3 text-gray-400" />
-            <span className="text-xs text-gray-500">{product.city}</span>
+            <MapPin className="w-3 h-3 text-amber-500" />
+            <span className="text-xs text-amber-600">{product.city}</span>
           </div>
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-amber-700 text-sm mb-4 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
 
@@ -97,7 +97,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           {product.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="bg-purple-50 text-purple-600 text-xs px-3 py-1 rounded-full font-medium"
+              className="bg-amber-50 text-amber-700 text-xs px-3 py-1 rounded-full font-medium border border-amber-200"
             >
               #{tag}
             </span>
@@ -111,13 +111,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
               <Star
                 key={i}
                 className={`w-4 h-4 ${
-                  i < 4 ? 'text-yellow-400 fill-current' : 'text-gray-300'
+                  i < 4 ? 'text-yellow-400 fill-current' : 'text-amber-300'
                 }`}
               />
             ))}
           </div>
-          <span className="text-sm text-gray-600">(4.8)</span>
-          <span className="text-xs text-gray-400">• 24 reviews</span>
+          <span className="text-sm text-amber-700">(4.8)</span>
+          <span className="text-xs text-amber-500">• 24 reviews</span>
         </div>
 
         {/* Action Button */}
@@ -125,10 +125,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onAddToCart?.(product)}
-          className="w-full bg-gradient-to-r from-purple-400 to-pink-400 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 relative overflow-hidden group"
+          className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg"
         >
-          <span className="relative z-10">Add to Cart</span>
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          Add to Cart
         </motion.button>
       </div>
     </motion.div>

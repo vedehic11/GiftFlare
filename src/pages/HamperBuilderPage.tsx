@@ -77,7 +77,7 @@ export const HamperBuilderPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 pt-8">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -85,16 +85,16 @@ export const HamperBuilderPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="bg-gradient-to-r from-purple-400 to-pink-400 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6">
+          <div className="bg-amber-600 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6">
             <Gift className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-amber-900 mb-4">
             Create Your Perfect{' '}
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-amber-600">
               Hamper
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-amber-700 max-w-2xl mx-auto">
             Curate a personalized gift collection from our handmade treasures
           </p>
         </motion.div>
@@ -103,8 +103,8 @@ export const HamperBuilderPage: React.FC = () => {
           {/* Products Section */}
           <div className="lg:col-span-3">
             {/* Category Filter */}
-            <div className="bg-white rounded-2xl shadow-sm border border-purple-100 p-6 mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Browse Products</h3>
+            <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-8">
+              <h3 className="text-lg font-semibold text-amber-900 mb-4">Browse Products</h3>
               <div className="flex flex-wrap gap-2">
                 {categories.map(category => (
                   <button
@@ -112,8 +112,8 @@ export const HamperBuilderPage: React.FC = () => {
                     onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                       selectedCategory === category
-                        ? 'bg-gradient-to-r from-purple-400 to-pink-400 text-white shadow-lg'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        ? 'bg-amber-600 text-white shadow-lg'
+                        : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
                     }`}
                   >
                     {category === 'all' ? 'All Categories' : category}
@@ -141,7 +141,7 @@ export const HamperBuilderPage: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => addToHamper(product)}
-                    className="absolute top-4 right-4 bg-gradient-to-r from-purple-400 to-pink-400 text-white p-2 rounded-full shadow-lg hover:shadow-xl transition-all"
+                    className="absolute top-4 right-4 bg-amber-600 hover:bg-amber-700 text-white p-2 rounded-full shadow-lg transition-all"
                   >
                     <Plus className="w-4 h-4" />
                   </motion.button>
@@ -153,9 +153,9 @@ export const HamperBuilderPage: React.FC = () => {
           {/* Hamper Builder Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-8">
-              <div className="bg-white rounded-2xl shadow-lg border border-purple-100 overflow-hidden">
+              <div className="bg-white rounded-2xl shadow-lg border border-amber-100 overflow-hidden">
                 {/* Header */}
-                <div className="bg-gradient-to-r from-purple-400 to-pink-400 p-6 text-white">
+                <div className="bg-amber-600 p-6 text-white">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-xl font-bold">Your Hamper</h3>
                     <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
@@ -176,8 +176,8 @@ export const HamperBuilderPage: React.FC = () => {
                 <div className="max-h-96 overflow-y-auto">
                   {hamperItems.length === 0 ? (
                     <div className="p-8 text-center">
-                      <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-500 text-sm">
+                      <Package className="w-12 h-12 text-amber-300 mx-auto mb-4" />
+                      <p className="text-amber-600 text-sm">
                         Start adding products to build your hamper
                       </p>
                     </div>
@@ -189,7 +189,7 @@ export const HamperBuilderPage: React.FC = () => {
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -20 }}
-                          className="flex items-center space-x-3 bg-purple-50 rounded-xl p-3"
+                          className="flex items-center space-x-3 bg-amber-50 rounded-xl p-3 border border-amber-200"
                         >
                           <img
                             src={item.product.image}
@@ -197,17 +197,17 @@ export const HamperBuilderPage: React.FC = () => {
                             className="w-12 h-12 rounded-lg object-cover"
                           />
                           <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-medium text-gray-900 truncate">
+                            <h4 className="text-sm font-medium text-amber-900 truncate">
                               {item.product.name}
                             </h4>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-amber-600">
                               ₹{item.product.price.toLocaleString()} each
                             </p>
                           </div>
                           <div className="flex items-center space-x-2">
                             <button
                               onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                              className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors"
+                              className="w-6 h-6 bg-amber-200 rounded-full flex items-center justify-center hover:bg-amber-300 transition-colors"
                             >
                               <Minus className="w-3 h-3" />
                             </button>
@@ -216,7 +216,7 @@ export const HamperBuilderPage: React.FC = () => {
                             </span>
                             <button
                               onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                              className="w-6 h-6 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center hover:bg-purple-200 transition-colors"
+                              className="w-6 h-6 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center hover:bg-amber-200 transition-colors"
                             >
                               <Plus className="w-3 h-3" />
                             </button>
@@ -235,10 +235,10 @@ export const HamperBuilderPage: React.FC = () => {
 
                 {/* Footer */}
                 {hamperItems.length > 0 && (
-                  <div className="border-t border-purple-100 p-6">
+                  <div className="border-t border-amber-100 p-6">
                     <div className="flex justify-between items-center mb-4">
-                      <span className="text-lg font-semibold text-gray-900">Total</span>
-                      <span className="text-2xl font-bold text-purple-600">
+                      <span className="text-lg font-semibold text-amber-900">Total</span>
+                      <span className="text-2xl font-bold text-amber-600">
                         ₹{totalPrice.toLocaleString()}
                       </span>
                     </div>
@@ -248,7 +248,7 @@ export const HamperBuilderPage: React.FC = () => {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setShowCheckout(true)}
-                        className="w-full bg-gradient-to-r from-purple-400 to-pink-400 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2"
+                        className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 shadow-lg"
                       >
                         <ShoppingBag className="w-4 h-4" />
                         <span>Checkout Hamper</span>
@@ -256,7 +256,7 @@ export const HamperBuilderPage: React.FC = () => {
                       
                       <button
                         onClick={clearHamper}
-                        className="w-full bg-gray-100 text-gray-600 py-2 rounded-xl font-medium hover:bg-gray-200 transition-colors flex items-center justify-center space-x-2"
+                        className="w-full bg-amber-100 text-amber-700 py-2 rounded-xl font-medium hover:bg-amber-200 transition-colors flex items-center justify-center space-x-2"
                       >
                         <Trash2 className="w-4 h-4" />
                         <span>Clear All</span>
@@ -280,12 +280,12 @@ export const HamperBuilderPage: React.FC = () => {
                 className="bg-white rounded-2xl p-8 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900">
+                  <h2 className="text-2xl font-bold text-amber-900">
                     {hamperName || 'Custom Hamper'} Summary
                   </h2>
                   <button
                     onClick={() => setShowCheckout(false)}
-                    className="text-gray-500 hover:text-gray-700 p-2"
+                    className="text-amber-600 hover:text-amber-800 p-2"
                   >
                     <X className="w-6 h-6" />
                   </button>
@@ -293,7 +293,7 @@ export const HamperBuilderPage: React.FC = () => {
 
                 <div className="space-y-4 mb-6">
                   {hamperItems.map((item) => (
-                    <div key={item.product.id} className="flex items-center justify-between p-4 bg-purple-50 rounded-xl">
+                    <div key={item.product.id} className="flex items-center justify-between p-4 bg-amber-50 rounded-xl border border-amber-200">
                       <div className="flex items-center space-x-4">
                         <img
                           src={item.product.image}
@@ -301,15 +301,15 @@ export const HamperBuilderPage: React.FC = () => {
                           className="w-16 h-16 rounded-lg object-cover"
                         />
                         <div>
-                          <h4 className="font-medium text-gray-900">{item.product.name}</h4>
-                          <p className="text-sm text-gray-500">by {item.product.sellerName}</p>
+                          <h4 className="font-medium text-amber-900">{item.product.name}</h4>
+                          <p className="text-sm text-amber-600">by {item.product.sellerName}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-gray-900">
+                        <p className="font-medium text-amber-900">
                           {item.quantity} × ₹{item.product.price.toLocaleString()}
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-amber-600">
                           ₹{(item.quantity * item.product.price).toLocaleString()}
                         </p>
                       </div>
@@ -317,10 +317,10 @@ export const HamperBuilderPage: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="border-t border-gray-200 pt-6">
+                <div className="border-t border-amber-200 pt-6">
                   <div className="flex justify-between items-center mb-6">
-                    <span className="text-xl font-semibold text-gray-900">Total Amount</span>
-                    <span className="text-3xl font-bold text-purple-600">
+                    <span className="text-xl font-semibold text-amber-900">Total Amount</span>
+                    <span className="text-3xl font-bold text-amber-600">
                       ₹{totalPrice.toLocaleString()}
                     </span>
                   </div>
@@ -328,7 +328,7 @@ export const HamperBuilderPage: React.FC = () => {
                   <div className="flex space-x-4">
                     <button
                       onClick={() => setShowCheckout(false)}
-                      className="flex-1 bg-gray-100 text-gray-700 py-3 px-6 rounded-xl font-semibold hover:bg-gray-200 transition-colors"
+                      className="flex-1 bg-amber-100 text-amber-700 py-3 px-6 rounded-xl font-semibold hover:bg-amber-200 transition-colors"
                     >
                       Continue Shopping
                     </button>
@@ -337,7 +337,7 @@ export const HamperBuilderPage: React.FC = () => {
                         // Handle checkout logic here
                         alert('Hamper checkout functionality would be implemented here!');
                       }}
-                      className="flex-1 bg-gradient-to-r from-purple-400 to-pink-400 text-white py-3 px-6 rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center space-x-2"
+                      className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 px-6 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 shadow-lg"
                     >
                       <span>Proceed to Payment</span>
                       <ArrowRight className="w-4 h-4" />

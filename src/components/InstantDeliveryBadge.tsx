@@ -32,7 +32,7 @@ export const InstantDeliveryBadge: React.FC<InstantDeliveryBadgeProps> = ({
     <motion.div
       initial={{ scale: 0 }}
       animate={{ scale: 1 }}
-      className={`bg-gradient-to-r from-purple-400 to-pink-400 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1 shadow-lg ${className}`}
+      className={`bg-green-600 text-white text-xs px-3 py-1.5 rounded-full flex items-center space-x-1 shadow-lg ${className}`}
     >
       <Truck className="w-3 h-3" />
       <span className="font-medium">Instant Delivery</span>
@@ -52,8 +52,8 @@ export const DeliveryTimeEstimate: React.FC<InstantDeliveryBadgeProps> = ({
 
   return (
     <div className="flex items-center space-x-2 text-sm">
-      <Clock className="w-4 h-4 text-gray-400" />
-      <span className="text-gray-600">
+      <Clock className="w-4 h-4 text-amber-500" />
+      <span className="text-amber-700">
         {isInstantDeliveryAvailable 
           ? 'Delivery in 2-4 hours' 
           : 'Delivery in 3-7 days'

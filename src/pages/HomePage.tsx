@@ -15,25 +15,25 @@ export const HomePage: React.FC = () => {
       icon: Heart,
       title: 'Handmade with Love',
       description: 'Every product is crafted by passionate artisans who pour their heart into their work.',
-      color: 'from-purple-400 to-pink-400'
+      color: 'bg-amber-600'
     },
     {
       icon: Truck,
       title: 'Instant Delivery',
       description: 'Get your gifts delivered within hours in supported cities.',
-      color: 'from-blue-400 to-purple-400'
+      color: 'bg-orange-600'
     },
     {
       icon: Users,
       title: 'Support Small Business',
       description: 'Directly support local artisans and small businesses in your community.',
-      color: 'from-pink-400 to-purple-400'
+      color: 'bg-yellow-600'
     },
     {
       icon: Award,
       title: 'Verified Makers',
       description: 'All our sellers are verified and committed to quality craftsmanship.',
-      color: 'from-purple-400 to-blue-400'
+      color: 'bg-amber-700'
     }
   ];
 
@@ -51,13 +51,13 @@ export const HomePage: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 mb-6">
               Why Choose{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="text-amber-600">
                 GiftFlare?
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-amber-700 max-w-3xl mx-auto">
               Connect with passionate makers and find the perfect handcrafted gifts that tell a story.
             </p>
           </motion.div>
@@ -73,15 +73,15 @@ export const HomePage: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className="text-center p-8 rounded-3xl bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 hover:shadow-xl transition-all duration-300 border border-purple-100"
+                  className="text-center p-8 rounded-3xl bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 hover:shadow-xl transition-all duration-300 border border-amber-100"
                 >
-                  <div className={`bg-gradient-to-r ${feature.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+                  <div className={`${feature.color} w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
                     <Icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-amber-900 mb-4">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className="text-amber-700 leading-relaxed">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -92,7 +92,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Featured Products */}
-      <section id="products-section" className="py-20 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      <section id="products-section" className="py-20 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -100,13 +100,13 @@ export const HomePage: React.FC = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-amber-900 mb-6">
               Featured{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="text-amber-600">
                 Creations
               </span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-amber-700 max-w-2xl mx-auto">
               Discover unique handmade products from our verified makers
             </p>
           </motion.div>
@@ -133,7 +133,7 @@ export const HomePage: React.FC = () => {
           >
             <Link
               to="/shop"
-              className="inline-flex items-center space-x-3 bg-gradient-to-r from-purple-400 to-pink-400 text-white px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all duration-300 group"
+              className="inline-flex items-center space-x-3 bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 group shadow-lg"
             >
               <span>Explore All Products</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -151,21 +151,21 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-8 border border-purple-100"
+              className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 border border-amber-100"
             >
-              <div className="bg-gradient-to-r from-purple-400 to-pink-400 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+              <div className="bg-amber-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
                 <Gift className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-amber-900 mb-4">
                 AI Gift Suggester
               </h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p className="text-amber-700 mb-6 leading-relaxed">
                 Not sure what to gift? Our AI-powered suggester helps you find the perfect handmade gift 
                 based on occasion, budget, and recipient preferences.
               </p>
               <Link
                 to="/gift-suggester"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-purple-400 to-pink-400 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+                className="inline-flex items-center space-x-2 bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg"
               >
                 <span>Try Gift Suggester</span>
                 <ArrowRight className="w-4 h-4" />
@@ -177,21 +177,21 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-pink-50 to-blue-50 rounded-3xl p-8 border border-pink-100"
+              className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl p-8 border border-orange-100"
             >
-              <div className="bg-gradient-to-r from-pink-400 to-blue-400 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
+              <div className="bg-orange-600 w-16 h-16 rounded-2xl flex items-center justify-center mb-6">
                 <Package className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              <h3 className="text-2xl font-bold text-amber-900 mb-4">
                 Custom Hamper Builder
               </h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p className="text-amber-700 mb-6 leading-relaxed">
                 Create personalized gift hampers by combining multiple handmade products. 
                 Perfect for special occasions and corporate gifting.
               </p>
               <Link
                 to="/hamper-builder"
-                className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-400 to-blue-400 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all"
+                className="inline-flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg"
               >
                 <span>Build Your Hamper</span>
                 <ArrowRight className="w-4 h-4" />
@@ -202,7 +202,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600">
+      <section className="py-20 bg-amber-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -212,21 +212,21 @@ export const HomePage: React.FC = () => {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Ready to Find the Perfect Gift?
             </h2>
-            <p className="text-xl text-purple-100 mb-8 leading-relaxed">
+            <p className="text-xl text-amber-100 mb-8 leading-relaxed">
               Join thousands of happy customers who've discovered the joy of giving handmade gifts 
               that truly make a difference.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/shop"
-                className="inline-flex items-center space-x-2 bg-white text-purple-600 px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all"
+                className="inline-flex items-center space-x-2 bg-white text-amber-600 px-8 py-4 rounded-2xl font-semibold hover:shadow-xl transition-all"
               >
                 <span>Start Shopping</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center space-x-2 bg-purple-500 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-purple-400 transition-all border-2 border-white/20"
+                className="inline-flex items-center space-x-2 bg-amber-700 hover:bg-amber-800 text-white px-8 py-4 rounded-2xl font-semibold transition-all border-2 border-amber-500"
               >
                 <span>Become a Seller</span>
                 <ArrowRight className="w-5 h-5" />

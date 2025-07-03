@@ -83,7 +83,7 @@ export const RegisterPage: React.FC = () => {
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 to-orange-50">
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -91,14 +91,14 @@ export const RegisterPage: React.FC = () => {
         >
           <div className="text-center">
             <div className="flex justify-center">
-              <div className="bg-gradient-to-r from-pink-500 to-rose-500 p-3 rounded-2xl">
+              <div className="bg-amber-600 p-3 rounded-2xl shadow-lg">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
             </div>
-            <h2 className="mt-6 text-3xl font-bold text-gray-900">
+            <h2 className="mt-6 text-3xl font-bold text-amber-900">
               Join GiftFlare Community
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-amber-700">
               Create your account to start gifting
             </p>
           </div>
@@ -112,7 +112,7 @@ export const RegisterPage: React.FC = () => {
 
             {/* Role Selection */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-amber-800 mb-2">
                 Account Type
               </label>
               <div className="grid grid-cols-3 gap-3">
@@ -123,8 +123,8 @@ export const RegisterPage: React.FC = () => {
                     onClick={() => setFormData({ ...formData, role: roleOption })}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       formData.role === roleOption
-                        ? 'bg-pink-100 text-pink-700 border-2 border-pink-300'
-                        : 'bg-gray-50 text-gray-600 border-2 border-gray-200 hover:bg-gray-100'
+                        ? 'bg-amber-600 text-white border-2 border-amber-600'
+                        : 'bg-white text-amber-700 border-2 border-amber-300 hover:bg-amber-50'
                     }`}
                   >
                     {roleOption.charAt(0).toUpperCase() + roleOption.slice(1)}
@@ -135,7 +135,7 @@ export const RegisterPage: React.FC = () => {
 
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="name" className="block text-sm font-medium text-amber-800">
                 Full Name
               </label>
               <div className="mt-1 relative">
@@ -146,16 +146,16 @@ export const RegisterPage: React.FC = () => {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="Enter your full name"
                 />
-                <User className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <User className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
               </div>
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-amber-800">
                 Email address
               </label>
               <div className="mt-1 relative">
@@ -166,16 +166,16 @@ export const RegisterPage: React.FC = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="Enter your email"
                 />
-                <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <Mail className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
               </div>
             </div>
 
             {/* City */}
             <div>
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="city" className="block text-sm font-medium text-amber-800">
                 City
               </label>
               <div className="mt-1 relative">
@@ -184,7 +184,7 @@ export const RegisterPage: React.FC = () => {
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                 >
                   {cities.map((city) => (
                     <option key={city} value={city}>
@@ -192,7 +192,7 @@ export const RegisterPage: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <MapPin className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <MapPin className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
               </div>
             </div>
 
@@ -200,7 +200,7 @@ export const RegisterPage: React.FC = () => {
             {formData.role === 'seller' && (
               <>
                 <div>
-                  <label htmlFor="businessName" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="businessName" className="block text-sm font-medium text-amber-800">
                     Business Name
                   </label>
                   <div className="mt-1 relative">
@@ -211,15 +211,15 @@ export const RegisterPage: React.FC = () => {
                       required
                       value={formData.businessName}
                       onChange={handleChange}
-                      className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                      className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                       placeholder="Enter your business name"
                     />
-                    <Building className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                    <Building className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="description" className="block text-sm font-medium text-amber-800">
                     Business Description
                   </label>
                   <textarea
@@ -228,7 +228,7 @@ export const RegisterPage: React.FC = () => {
                     rows={3}
                     value={formData.description}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    className="mt-1 block w-full px-3 py-2 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                     placeholder="Describe your business and products"
                   />
                 </div>
@@ -237,7 +237,7 @@ export const RegisterPage: React.FC = () => {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-amber-800">
                 Password
               </label>
               <div className="mt-1 relative">
@@ -248,14 +248,14 @@ export const RegisterPage: React.FC = () => {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 pr-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="Create a password"
                 />
-                <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <Lock className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-2.5 text-amber-500 hover:text-amber-700"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -264,7 +264,7 @@ export const RegisterPage: React.FC = () => {
 
             {/* Confirm Password */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-amber-800">
                 Confirm Password
               </label>
               <div className="mt-1 relative">
@@ -275,10 +275,10 @@ export const RegisterPage: React.FC = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="Confirm your password"
                 />
-                <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <Lock className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
               </div>
             </div>
 
@@ -288,16 +288,16 @@ export const RegisterPage: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-shadow disabled:opacity-50"
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg font-medium transition-all disabled:opacity-50 shadow-lg"
               >
                 {isLoading ? 'Creating account...' : 'Create account'}
               </motion.button>
             </div>
 
             <div className="text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-amber-700">
                 Already have an account?{' '}
-                <Link to="/login" className="text-pink-600 hover:text-pink-500 font-medium">
+                <Link to="/login" className="text-amber-600 hover:text-amber-800 font-medium">
                   Sign in here
                 </Link>
               </p>

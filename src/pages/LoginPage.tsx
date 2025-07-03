@@ -36,7 +36,7 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Form */}
-      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-amber-50 to-orange-50">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -44,14 +44,14 @@ export const LoginPage: React.FC = () => {
         >
           <div className="text-center">
             <div className="flex justify-center">
-              <div className="bg-gradient-to-r from-pink-500 to-rose-500 p-3 rounded-2xl">
+              <div className="bg-amber-600 p-3 rounded-2xl shadow-lg">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
             </div>
-            <h2 className="mt-6 text-3xl font-bold text-gray-900">
+            <h2 className="mt-6 text-3xl font-bold text-amber-900">
               Welcome back to GiftFlare
             </h2>
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-amber-700">
               Sign in to your account to continue
             </p>
           </div>
@@ -65,7 +65,7 @@ export const LoginPage: React.FC = () => {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-amber-800">
                 Email address
               </label>
               <div className="mt-1 relative">
@@ -76,16 +76,16 @@ export const LoginPage: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="Enter your email"
                 />
-                <Mail className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <Mail className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
               </div>
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-amber-800">
                 Password
               </label>
               <div className="mt-1 relative">
@@ -96,14 +96,14 @@ export const LoginPage: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full px-3 py-2 pl-10 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 pr-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   placeholder="Enter your password"
                 />
-                <Lock className="w-5 h-5 text-gray-400 absolute left-3 top-2.5" />
+                <Lock className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-2.5 text-amber-500 hover:text-amber-700"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -116,16 +116,16 @@ export const LoginPage: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-4 rounded-lg font-medium hover:shadow-lg transition-shadow disabled:opacity-50"
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg font-medium transition-all disabled:opacity-50 shadow-lg"
               >
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </motion.button>
             </div>
 
             <div className="text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-amber-700">
                 Don't have an account?{' '}
-                <Link to="/register" className="text-pink-600 hover:text-pink-500 font-medium">
+                <Link to="/register" className="text-amber-600 hover:text-amber-800 font-medium">
                   Sign up here
                 </Link>
               </p>
