@@ -60,3 +60,16 @@ export interface DeliveryCity {
   name: string;
   isActive: boolean;
 }
+
+export interface HeroVideo {
+  id: string;
+  title: string;
+  description: string;
+  video_url: string;
+  thumbnail_url: string;
+  maker_name: string;
+  location: string;
+  is_active: boolean;
+  order_index: number;
+  created_at: string;
+}

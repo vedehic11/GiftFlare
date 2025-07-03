@@ -30,6 +30,45 @@ export interface Database {
         }
         Relationships: []
       }
+      hero_videos: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          is_active: boolean
+          location: string
+          maker_name: string
+          order_index: number
+          thumbnail_url: string
+          title: string
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          is_active?: boolean
+          location: string
+          maker_name: string
+          order_index?: number
+          thumbnail_url: string
+          title: string
+          video_url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_active?: boolean
+          location?: string
+          maker_name?: string
+          order_index?: number
+          thumbnail_url?: string
+          title?: string
+          video_url?: string
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           category: string
