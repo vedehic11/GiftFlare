@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import { CartIcon } from './CartIcon';
 import { CartSidebar } from './CartSidebar';
+import { NotificationCenter } from './NotificationCenter';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -102,6 +103,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* User Menu */}
             <div className="hidden md:flex items-center space-x-4">
+              {/* Notifications */}
+              {user && <NotificationCenter />}
+              
               {/* Cart Icon */}
               {(!user || user.role === 'buyer') && <CartIcon />}
               
@@ -145,6 +149,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center space-x-2">
+              {user && <NotificationCenter />}
               {(!user || user.role === 'buyer') && <CartIcon />}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}

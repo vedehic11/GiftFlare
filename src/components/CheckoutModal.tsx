@@ -20,6 +20,8 @@ import {
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useLocation } from '../contexts/LocationContext';
+import { orderService } from '../services/orderService';
+import toast from 'react-hot-toast';
 
 // Initialize Stripe (replace with your publishable key)
 const stripePromise = loadStripe('pk_test_51234567890abcdef...');
@@ -89,7 +91,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !user) {
       return;
     }
 
@@ -127,26 +129,41 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
         return;
       }
 
-      // Simulate Dunzo API call for instant delivery
-      if (deliveryType === 'instant') {
-        console.log('Booking Dunzo delivery...', {
-          pickup: 'Seller location',
-          delivery: deliverToFriend ? friendDetails : shippingDetails,
-          items: items.map(item => ({
-            name: item.product.name,
-            quantity: item.quantity,
-            price: item.product.price
-          }))
-        });
+      // Create order in database
+      const orderData = await orderService.createOrder({
+        userId: user.id,
+        items,
+        totalAmount: total,
+        deliveryType,
+        deliveryAddress: shippingDetails,
+        friendDelivery: deliverToFriend ? friendDetails : undefined,
+        paymentIntentId: paymentMethod.id
+      });
+
+      if (!orderData) {
+        setError('Failed to create order. Please try again.');
+        setIsProcessing(false);
+        return;
       }
 
-      // In a real app, you would send this to your backend to create a payment intent
-      // For demo purposes, we'll simulate a successful payment
+      // If instant delivery, book with Dunzo
+      if (deliveryType === 'instant') {
+        const dunzoResult = await orderService.bookDunzoDelivery(orderData);
+        if (!dunzoResult.success) {
+          toast.error('Instant delivery booking failed, but your order is confirmed');
+        }
+      }
+
+      // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Simulate payment success
+      // Update order status to confirmed
+      await orderService.updateOrderStatus(orderData.id, 'confirmed');
+
       setPaymentSuccess(true);
       clearCart();
+      
+      toast.success('Order placed successfully!');
       
       // Close modal after showing success
       setTimeout(() => {
@@ -156,6 +173,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
 
     } catch (err) {
       setError('Payment failed. Please try again.');
+      toast.error('Payment failed. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -179,7 +197,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
             Order Total: <span className="font-bold">₹{total.toLocaleString()}</span>
           </p>
           <p className="text-xs text-green-700 mt-1">
-            Delivery: {deliveryType === 'instant' ? 'Instant (Dunzo)' : 'Standard'}
+            You'll receive email and SMS updates about your order.
           </p>
         </div>
       </div>
