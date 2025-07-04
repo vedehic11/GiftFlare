@@ -19,10 +19,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   };
 
   const handleGiftAdd = () => {
-    addToCart(product, { 
-      isGift: true, 
-      giftPackaging: true 
-    });
+    addToCart(product, { giftPackaging: true });
   };
 
   return (
@@ -183,7 +180,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleGiftAdd}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-3 rounded-xl transition-all duration-300 shadow-lg"
+            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-3 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center"
           >
             <Gift className="w-4 h-4" />
           </motion.button>

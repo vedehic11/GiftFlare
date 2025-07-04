@@ -6,12 +6,11 @@ import {
   Minus, 
   ShoppingBag, 
   Gift, 
-  Heart, 
-  User,
   Package,
   MessageSquare,
   CreditCard,
-  Truck
+  Truck,
+  Clock
 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { CheckoutModal } from './CheckoutModal';
@@ -24,32 +23,26 @@ export const CartSidebar: React.FC = () => {
     updateCartItem,
     getTotalPrice, 
     getTotalItems,
+    getGiftPackagingCost,
+    getDeliveryCost,
     isCartOpen, 
     setIsCartOpen 
   } = useCart();
   
   const [showCheckout, setShowCheckout] = useState(false);
 
-  const handleGiftToggle = (itemId: string, isGift: boolean) => {
-    updateCartItem(itemId, { 
-      isGift,
-      giftNote: isGift ? '' : undefined,
-      giftPackaging: isGift ? false : false,
-      deliverToFriend: isGift ? false : false
-    });
-  };
-
   const handleGiftPackagingToggle = (itemId: string, giftPackaging: boolean) => {
-    updateCartItem(itemId, { giftPackaging });
-  };
-
-  const handleDeliverToFriendToggle = (itemId: string, deliverToFriend: boolean) => {
-    updateCartItem(itemId, { deliverToFriend });
+    updateCartItem(itemId, { giftPackaging, giftNote: giftPackaging ? '' : undefined });
   };
 
   const handleGiftNoteChange = (itemId: string, giftNote: string) => {
     updateCartItem(itemId, { giftNote });
   };
+
+  const subtotal = getTotalPrice();
+  const giftPackagingCost = getGiftPackagingCost();
+  const standardDeliveryCost = getDeliveryCost('standard');
+  const instantDeliveryCost = getDeliveryCost('instant');
 
   return (
     <>
@@ -156,66 +149,36 @@ export const CartSidebar: React.FC = () => {
                           </span>
                         </div>
 
-                        {/* Gift Options */}
+                        {/* Gift Packaging Option */}
                         <div className="space-y-3 border-t border-amber-200 pt-3">
-                          {/* Make it a Gift */}
                           <label className="flex items-center space-x-3 cursor-pointer">
                             <input
                               type="checkbox"
-                              checked={item.isGift}
-                              onChange={(e) => handleGiftToggle(item.id, e.target.checked)}
+                              checked={item.giftPackaging}
+                              onChange={(e) => handleGiftPackagingToggle(item.id, e.target.checked)}
                               className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
                             />
                             <div className="flex items-center space-x-2">
-                              <Gift className="w-4 h-4 text-amber-600" />
-                              <span className="text-sm font-medium text-amber-900">Make it a gift</span>
+                              <Package className="w-4 h-4 text-amber-600" />
+                              <span className="text-sm font-medium text-amber-900">
+                                Gift packaging (+₹30)
+                              </span>
                             </div>
                           </label>
 
-                          {item.isGift && (
-                            <div className="space-y-3 ml-7">
-                              {/* Gift Packaging */}
-                              <label className="flex items-center space-x-3 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={item.giftPackaging}
-                                  onChange={(e) => handleGiftPackagingToggle(item.id, e.target.checked)}
-                                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
-                                />
-                                <div className="flex items-center space-x-2">
-                                  <Package className="w-4 h-4 text-amber-600" />
-                                  <span className="text-sm text-amber-900">Gift packaging (+₹50)</span>
-                                </div>
-                              </label>
-
-                              {/* Deliver to Friend */}
-                              <label className="flex items-center space-x-3 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={item.deliverToFriend}
-                                  onChange={(e) => handleDeliverToFriendToggle(item.id, e.target.checked)}
-                                  className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
-                                />
-                                <div className="flex items-center space-x-2">
-                                  <User className="w-4 h-4 text-amber-600" />
-                                  <span className="text-sm text-amber-900">Deliver to friend</span>
-                                </div>
-                              </label>
-
-                              {/* Gift Note */}
-                              <div>
-                                <div className="flex items-center space-x-2 mb-2">
-                                  <MessageSquare className="w-4 h-4 text-amber-600" />
-                                  <span className="text-sm font-medium text-amber-900">Gift note</span>
-                                </div>
-                                <textarea
-                                  value={item.giftNote || ''}
-                                  onChange={(e) => handleGiftNoteChange(item.id, e.target.value)}
-                                  placeholder="Write a personal message..."
-                                  className="w-full text-xs border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
-                                  rows={2}
-                                />
+                          {item.giftPackaging && (
+                            <div className="ml-7">
+                              <div className="flex items-center space-x-2 mb-2">
+                                <MessageSquare className="w-4 h-4 text-amber-600" />
+                                <span className="text-sm font-medium text-amber-900">Gift note</span>
                               </div>
+                              <textarea
+                                value={item.giftNote || ''}
+                                onChange={(e) => handleGiftNoteChange(item.id, e.target.value)}
+                                placeholder="Write a personal message..."
+                                className="w-full text-xs border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-none"
+                                rows={2}
+                              />
                             </div>
                           )}
                         </div>
@@ -228,11 +191,41 @@ export const CartSidebar: React.FC = () => {
               {/* Footer */}
               {items.length > 0 && (
                 <div className="border-t border-amber-200 p-6 bg-white">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-lg font-semibold text-amber-900">Total</span>
-                    <span className="text-2xl font-bold text-amber-600">
-                      ₹{getTotalPrice().toLocaleString()}
-                    </span>
+                  {/* Price Breakdown */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-amber-700">Subtotal</span>
+                      <span className="text-amber-900">₹{subtotal.toLocaleString()}</span>
+                    </div>
+                    
+                    {giftPackagingCost > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-amber-700">Gift packaging</span>
+                        <span className="text-amber-900">₹{giftPackagingCost}</span>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-between text-sm">
+                      <span className="text-amber-700">Standard delivery</span>
+                      <span className="text-amber-900">
+                        {standardDeliveryCost === 0 ? 'FREE' : `₹${standardDeliveryCost}`}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between text-sm">
+                      <span className="text-amber-700 flex items-center">
+                        <Truck className="w-3 h-3 mr-1" />
+                        Instant delivery (Dunzo)
+                      </span>
+                      <span className="text-amber-900">₹{instantDeliveryCost}</span>
+                    </div>
+                    
+                    <div className="border-t border-amber-200 pt-2 flex justify-between font-bold">
+                      <span className="text-amber-900">Total (Standard)</span>
+                      <span className="text-amber-600">
+                        ₹{(subtotal + giftPackagingCost + standardDeliveryCost).toLocaleString()}
+                      </span>
+                    </div>
                   </div>
                   
                   <button

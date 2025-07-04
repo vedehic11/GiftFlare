@@ -5,27 +5,42 @@ export interface CartItem {
   id: string;
   product: Product;
   quantity: number;
-  isGift: boolean;
-  giftNote?: string;
   giftPackaging: boolean;
+  giftNote?: string;
+}
+
+export interface CheckoutDetails {
   deliverToFriend: boolean;
   friendDetails?: {
     name: string;
     email: string;
     phone: string;
     address: string;
+    city: string;
+    pincode: string;
   };
+  shippingDetails: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    pincode: string;
+  };
+  deliveryType: 'standard' | 'instant';
 }
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product, options?: Partial<CartItem>) => void;
+  addToCart: (product: Product, options?: { giftPackaging?: boolean; quantity?: number }) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   updateCartItem: (itemId: string, updates: Partial<CartItem>) => void;
   clearCart: () => void;
   getTotalPrice: () => number;
   getTotalItems: () => number;
+  getGiftPackagingCost: () => number;
+  getDeliveryCost: (deliveryType: 'standard' | 'instant') => number;
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
 }
@@ -61,10 +76,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem('giftflare-cart', JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (product: Product, options: Partial<CartItem> = {}) => {
+  const addToCart = (product: Product, options: { giftPackaging?: boolean; quantity?: number } = {}) => {
     const existingItem = items.find(item => 
       item.product.id === product.id && 
-      item.isGift === (options.isGift || false) &&
       item.giftPackaging === (options.giftPackaging || false)
     );
 
@@ -72,14 +86,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       updateQuantity(existingItem.id, existingItem.quantity + (options.quantity || 1));
     } else {
       const newItem: CartItem = {
-        id: `${product.id}-${Date.now()}`,
+        id: `${product.id}-${Date.now()}-${options.giftPackaging ? 'gift' : 'regular'}`,
         product,
         quantity: options.quantity || 1,
-        isGift: options.isGift || false,
-        giftNote: options.giftNote || '',
         giftPackaging: options.giftPackaging || false,
-        deliverToFriend: options.deliverToFriend || false,
-        friendDetails: options.friendDetails
+        giftNote: ''
       };
       setItems(prev => [...prev, newItem]);
     }
@@ -112,10 +123,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const getTotalPrice = () => {
     return items.reduce((total, item) => {
-      let itemTotal = item.product.price * item.quantity;
-      if (item.giftPackaging) itemTotal += 50; // ₹50 for gift packaging
-      return total + itemTotal;
+      return total + (item.product.price * item.quantity);
     }, 0);
+  };
+
+  const getGiftPackagingCost = () => {
+    return items.filter(item => item.giftPackaging).length * 30; // ₹30 per gift item
+  };
+
+  const getDeliveryCost = (deliveryType: 'standard' | 'instant') => {
+    if (deliveryType === 'instant') {
+      return 99; // ₹99 for instant delivery via Dunzo
+    }
+    return getTotalPrice() >= 500 ? 0 : 50; // Free delivery above ₹500, otherwise ₹50
   };
 
   const getTotalItems = () => {
@@ -132,6 +152,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       clearCart,
       getTotalPrice,
       getTotalItems,
+      getGiftPackagingCost,
+      getDeliveryCost,
       isCartOpen,
       setIsCartOpen
     }}>

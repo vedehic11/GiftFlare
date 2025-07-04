@@ -12,10 +12,14 @@ import {
   Package,
   Gift,
   CheckCircle,
-  Loader
+  Loader,
+  Truck,
+  Clock,
+  Heart
 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useLocation } from '../contexts/LocationContext';
 
 // Initialize Stripe (replace with your publishable key)
 const stripePromise = loadStripe('pk_test_51234567890abcdef...');
@@ -32,24 +36,51 @@ interface CheckoutFormProps {
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const { items, getTotalPrice, clearCart } = useCart();
+  const { items, getTotalPrice, getGiftPackagingCost, getDeliveryCost, clearCart } = useCart();
   const { user } = useAuth();
+  const { userCity } = useLocation();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deliveryType, setDeliveryType] = useState<'standard' | 'instant'>('standard');
+  const [deliverToFriend, setDeliverToFriend] = useState(false);
   
   const [shippingDetails, setShippingDetails] = useState({
     name: user?.name || '',
     email: user?.email || '',
     phone: '',
     address: '',
-    city: user?.city || '',
+    city: user?.city || userCity || '',
     pincode: ''
   });
 
+  const [friendDetails, setFriendDetails] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    pincode: ''
+  });
+
+  const subtotal = getTotalPrice();
+  const giftPackagingCost = getGiftPackagingCost();
+  const deliveryCost = getDeliveryCost(deliveryType);
+  const total = subtotal + giftPackagingCost + deliveryCost;
+
+  const hasGiftItems = items.some(item => item.giftPackaging);
+  const canUseInstantDelivery = userCity && ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Hyderabad'].includes(userCity);
+
   const handleShippingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setShippingDetails(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleFriendDetailsChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFriendDetails(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }));
@@ -96,6 +127,19 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
         return;
       }
 
+      // Simulate Dunzo API call for instant delivery
+      if (deliveryType === 'instant') {
+        console.log('Booking Dunzo delivery...', {
+          pickup: 'Seller location',
+          delivery: deliverToFriend ? friendDetails : shippingDetails,
+          items: items.map(item => ({
+            name: item.product.name,
+            quantity: item.quantity,
+            price: item.product.price
+          }))
+        });
+      }
+
       // In a real app, you would send this to your backend to create a payment intent
       // For demo purposes, we'll simulate a successful payment
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -123,13 +167,19 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
         <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle className="w-10 h-10 text-green-600" />
         </div>
-        <h3 className="text-2xl font-bold text-green-800 mb-4">Payment Successful!</h3>
+        <h3 className="text-2xl font-bold text-green-800 mb-4">Order Placed Successfully!</h3>
         <p className="text-green-700 mb-6">
-          Your order has been placed successfully. You'll receive a confirmation email shortly.
+          {deliveryType === 'instant' 
+            ? 'Your order will be delivered within 2-4 hours via Dunzo!'
+            : 'Your order will be delivered in 3-7 business days.'
+          }
         </p>
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <p className="text-sm text-green-800">
-            Order Total: <span className="font-bold">₹{getTotalPrice().toLocaleString()}</span>
+            Order Total: <span className="font-bold">₹{total.toLocaleString()}</span>
+          </p>
+          <p className="text-xs text-green-700 mt-1">
+            Delivery: {deliveryType === 'instant' ? 'Instant (Dunzo)' : 'Standard'}
           </p>
         </div>
       </div>
@@ -144,28 +194,110 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
         <div className="space-y-2">
           {items.map((item) => (
             <div key={item.id} className="flex justify-between text-sm">
-              <span className="text-amber-800">
+              <span className="text-amber-800 flex items-center">
                 {item.product.name} × {item.quantity}
-                {item.isGift && <Gift className="w-3 h-3 inline ml-1" />}
-                {item.giftPackaging && <Package className="w-3 h-3 inline ml-1" />}
+                {item.giftPackaging && <Package className="w-3 h-3 ml-1 text-amber-600" />}
               </span>
               <span className="font-medium text-amber-900">
-                ₹{((item.product.price * item.quantity) + (item.giftPackaging ? 50 : 0)).toLocaleString()}
+                ₹{(item.product.price * item.quantity).toLocaleString()}
               </span>
             </div>
           ))}
+          
+          {giftPackagingCost > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-amber-700">Gift packaging</span>
+              <span className="text-amber-900">₹{giftPackagingCost}</span>
+            </div>
+          )}
+          
+          <div className="flex justify-between text-sm">
+            <span className="text-amber-700">Delivery</span>
+            <span className="text-amber-900">
+              {deliveryCost === 0 ? 'FREE' : `₹${deliveryCost}`}
+            </span>
+          </div>
+          
           <div className="border-t border-amber-300 pt-2 flex justify-between font-bold">
             <span className="text-amber-900">Total</span>
-            <span className="text-amber-600">₹{getTotalPrice().toLocaleString()}</span>
+            <span className="text-amber-600">₹{total.toLocaleString()}</span>
           </div>
         </div>
       </div>
+
+      {/* Delivery Options */}
+      <div>
+        <h3 className="font-semibold text-amber-900 mb-4 flex items-center">
+          <Truck className="w-5 h-5 mr-2" />
+          Delivery Options
+        </h3>
+        <div className="space-y-3">
+          <label className="flex items-center space-x-3 cursor-pointer p-3 border border-amber-200 rounded-lg hover:bg-amber-50">
+            <input
+              type="radio"
+              name="deliveryType"
+              value="standard"
+              checked={deliveryType === 'standard'}
+              onChange={(e) => setDeliveryType(e.target.value as 'standard')}
+              className="text-amber-600 focus:ring-amber-500"
+            />
+            <div className="flex-1">
+              <div className="flex items-center space-x-2">
+                <Clock className="w-4 h-4 text-amber-600" />
+                <span className="font-medium text-amber-900">Standard Delivery</span>
+              </div>
+              <p className="text-sm text-amber-700">3-7 business days • {deliveryCost === 0 ? 'FREE' : `₹${getDeliveryCost('standard')}`}</p>
+            </div>
+          </label>
+          
+          {canUseInstantDelivery && (
+            <label className="flex items-center space-x-3 cursor-pointer p-3 border border-amber-200 rounded-lg hover:bg-amber-50">
+              <input
+                type="radio"
+                name="deliveryType"
+                value="instant"
+                checked={deliveryType === 'instant'}
+                onChange={(e) => setDeliveryType(e.target.value as 'instant')}
+                className="text-amber-600 focus:ring-amber-500"
+              />
+              <div className="flex-1">
+                <div className="flex items-center space-x-2">
+                  <Truck className="w-4 h-4 text-amber-600" />
+                  <span className="font-medium text-amber-900">Instant Delivery (Dunzo)</span>
+                </div>
+                <p className="text-sm text-amber-700">2-4 hours • ₹{getDeliveryCost('instant')}</p>
+              </div>
+            </label>
+          )}
+        </div>
+      </div>
+
+      {/* Gift Delivery Option */}
+      {hasGiftItems && (
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+          <label className="flex items-center space-x-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={deliverToFriend}
+              onChange={(e) => setDeliverToFriend(e.target.checked)}
+              className="rounded border-orange-300 text-orange-600 focus:ring-orange-500"
+            />
+            <div className="flex items-center space-x-2">
+              <Heart className="w-4 h-4 text-orange-600" />
+              <span className="font-medium text-orange-900">Deliver gifts to a friend</span>
+            </div>
+          </label>
+          <p className="text-sm text-orange-700 mt-2 ml-7">
+            Send your gift items directly to your friend's address
+          </p>
+        </div>
+      )}
 
       {/* Shipping Details */}
       <div>
         <h3 className="font-semibold text-amber-900 mb-4 flex items-center">
           <User className="w-5 h-5 mr-2" />
-          Shipping Details
+          {deliverToFriend ? 'Your Details' : 'Shipping Details'}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -212,42 +344,99 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
               className="w-full border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             />
           </div>
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-amber-800 mb-1">Address</label>
-            <textarea
-              name="address"
-              required
-              value={shippingDetails.address}
-              onChange={handleShippingChange}
-              rows={3}
-              className="w-full border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-amber-800 mb-1">Pincode</label>
-            <input
-              type="text"
-              name="pincode"
-              required
-              value={shippingDetails.pincode}
-              onChange={handleShippingChange}
-              className="w-full border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
-          </div>
+          {!deliverToFriend && (
+            <>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-amber-800 mb-1">Address</label>
+                <textarea
+                  name="address"
+                  required
+                  value={shippingDetails.address}
+                  onChange={handleShippingChange}
+                  rows={3}
+                  className="w-full border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-amber-800 mb-1">Pincode</label>
+                <input
+                  type="text"
+                  name="pincode"
+                  required
+                  value={shippingDetails.pincode}
+                  onChange={handleShippingChange}
+                  className="w-full border border-amber-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Friend Delivery Details */}
-      {items.some(item => item.deliverToFriend) && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 className="font-semibold text-blue-900 mb-3 flex items-center">
-            <User className="w-5 h-5 mr-2" />
-            Friend's Details (for gift delivery)
+      {deliverToFriend && (
+        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+          <h3 className="font-semibold text-orange-900 mb-3 flex items-center">
+            <Gift className="w-5 h-5 mr-2" />
+            Friend's Delivery Details
           </h3>
-          <p className="text-sm text-blue-700 mb-3">
-            Some items will be delivered to your friend. Please provide their details.
-          </p>
-          {/* Add friend details form here */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-orange-800 mb-1">Friend's Name</label>
+              <input
+                type="text"
+                name="name"
+                required
+                value={friendDetails.name}
+                onChange={handleFriendDetailsChange}
+                className="w-full border border-orange-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-orange-800 mb-1">Friend's Phone</label>
+              <input
+                type="tel"
+                name="phone"
+                required
+                value={friendDetails.phone}
+                onChange={handleFriendDetailsChange}
+                className="w-full border border-orange-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-orange-800 mb-1">Friend's Address</label>
+              <textarea
+                name="address"
+                required
+                value={friendDetails.address}
+                onChange={handleFriendDetailsChange}
+                rows={3}
+                className="w-full border border-orange-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-orange-800 mb-1">City</label>
+              <input
+                type="text"
+                name="city"
+                required
+                value={friendDetails.city}
+                onChange={handleFriendDetailsChange}
+                className="w-full border border-orange-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-orange-800 mb-1">Pincode</label>
+              <input
+                type="text"
+                name="pincode"
+                required
+                value={friendDetails.pincode}
+                onChange={handleFriendDetailsChange}
+                className="w-full border border-orange-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
+          </div>
         </div>
       )}
 
@@ -293,7 +482,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ onClose }) => {
         ) : (
           <>
             <CreditCard className="w-5 h-5" />
-            <span>Pay ₹{getTotalPrice().toLocaleString()}</span>
+            <span>Pay ₹{total.toLocaleString()}</span>
           </>
         )}
       </button>
@@ -310,7 +499,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose })
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
           >
             <div className="flex justify-between items-center p-6 border-b border-amber-200">
               <h2 className="text-2xl font-bold text-amber-900">Checkout</h2>
