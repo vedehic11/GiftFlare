@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { AppProvider } from './contexts/AppContext';
 import { LocationProvider } from './contexts/LocationContext';
+import { CartProvider } from './contexts/CartContext';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { LocationDetector } from './components/LocationDetector';
@@ -22,38 +23,40 @@ function App() {
     <AuthProvider>
       <LocationProvider>
         <AppProvider>
-          <Router>
-            <Layout>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/shop" element={<ShopPage />} />
-                <Route path="/gift-suggester" element={<GiftSuggesterPage />} />
-                <Route path="/hamper-builder" element={<HamperBuilderPage />} />
-                
-                {/* Protected Routes */}
-                <Route 
-                  path="/seller/dashboard" 
-                  element={
-                    <ProtectedRoute requiredRole="seller">
-                      <SellerDashboardPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/dashboard" 
-                  element={
-                    <ProtectedRoute requiredRole="admin">
-                      <AdminDashboardPage />
-                    </ProtectedRoute>
-                  } 
-                />
-              </Routes>
-              <LocationDetector />
-            </Layout>
-          </Router>
+          <CartProvider>
+            <Router>
+              <Layout>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/shop" element={<ShopPage />} />
+                  <Route path="/gift-suggester" element={<GiftSuggesterPage />} />
+                  <Route path="/hamper-builder" element={<HamperBuilderPage />} />
+                  
+                  {/* Protected Routes */}
+                  <Route 
+                    path="/seller/dashboard" 
+                    element={
+                      <ProtectedRoute requiredRole="seller">
+                        <SellerDashboardPage />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/dashboard" 
+                    element={
+                      <ProtectedRoute requiredRole="admin">
+                        <AdminDashboardPage />
+                      </ProtectedRoute>
+                    } 
+                  />
+                </Routes>
+                <LocationDetector />
+              </Layout>
+            </Router>
+          </CartProvider>
         </AppProvider>
       </LocationProvider>
     </AuthProvider>

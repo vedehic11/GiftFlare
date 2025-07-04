@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Search, Filter, MapPin, Truck, X, Grid, List, SlidersHorizontal } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 import { useApp } from '../contexts/AppContext';
-import { Product } from '../types';
 
 export const ShopPage: React.FC = () => {
   const { products } = useApp();
@@ -50,12 +49,6 @@ export const ShopPage: React.FC = () => {
 
     return filtered;
   }, [approvedProducts, searchTerm, selectedCity, showInstantDelivery, selectedCategory, sortBy]);
-
-  const handleAddToCart = (product: Product) => {
-    // Mock add to cart functionality
-    console.log('Added to cart:', product);
-    // In a real app, this would update the cart state
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 pt-8">
@@ -244,7 +237,7 @@ export const ShopPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <ProductCard product={product} onAddToCart={handleAddToCart} />
+                <ProductCard product={product} />
               </motion.div>
             ))}
           </div>

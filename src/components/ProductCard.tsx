@@ -1,16 +1,29 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Heart, Verified, Play, Star, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Heart, Verified, Play, Star, MapPin, ShoppingBag, Gift, Package } from 'lucide-react';
 import { Product } from '../types';
 import { InstantDeliveryBadge, DeliveryTimeEstimate } from './InstantDeliveryBadge';
+import { useCart } from '../contexts/CartContext';
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart?: (product: Product) => void;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-  const [isLiked, setIsLiked] = React.useState(false);
+export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
+  const { addToCart } = useCart();
+
+  const handleQuickAdd = () => {
+    addToCart(product);
+  };
+
+  const handleGiftAdd = () => {
+    addToCart(product, { 
+      isGift: true, 
+      giftPackaging: true 
+    });
+  };
 
   return (
     <motion.div
@@ -18,6 +31,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -8 }}
       className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group border border-amber-100"
+      onHoverStart={() => setShowQuickAdd(true)}
+      onHoverEnd={() => setShowQuickAdd(false)}
     >
       {/* Product Image */}
       <div className="relative overflow-hidden">
@@ -57,6 +72,38 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
             }`} 
           />
         </motion.button>
+
+        {/* Quick Add Buttons */}
+        <AnimatePresence>
+          {showQuickAdd && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="absolute bottom-4 left-4 flex space-x-2"
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleQuickAdd}
+                className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg flex items-center space-x-2"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Add to Cart</span>
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleGiftAdd}
+                className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg flex items-center space-x-2"
+              >
+                <Gift className="w-4 h-4" />
+                <span>Gift</span>
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Product Info */}
@@ -120,15 +167,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           <span className="text-xs text-amber-500">• 24 reviews</span>
         </div>
 
-        {/* Action Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => onAddToCart?.(product)}
-          className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg"
-        >
-          Add to Cart
-        </motion.button>
+        {/* Action Buttons */}
+        <div className="flex space-x-2">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleQuickAdd}
+            className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>Add to Cart</span>
+          </motion.button>
+          
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleGiftAdd}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-3 rounded-xl transition-all duration-300 shadow-lg"
+          >
+            <Gift className="w-4 h-4" />
+          </motion.button>
+        </div>
       </div>
     </motion.div>
   );

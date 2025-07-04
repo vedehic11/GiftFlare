@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Heart, 
-  ShoppingBag, 
   User, 
   Gift, 
   LogOut, 
@@ -13,6 +12,8 @@ import {
   Package
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { CartIcon } from './CartIcon';
+import { CartSidebar } from './CartSidebar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const getBuyerNavigation = () => [
     { name: 'Home', href: '/', icon: Heart },
-    { name: 'Shop', href: '/shop', icon: ShoppingBag },
+    { name: 'Shop', href: '/shop', icon: Sparkles },
     { name: 'Gift Suggester', href: '/gift-suggester', icon: Gift },
     { name: 'Hamper Builder', href: '/hamper-builder', icon: Package },
   ];
@@ -101,6 +102,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* User Menu */}
             <div className="hidden md:flex items-center space-x-4">
+              {/* Cart Icon */}
+              {(!user || user.role === 'buyer') && <CartIcon />}
+              
               {user ? (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-3 bg-amber-50 rounded-xl px-4 py-2">
@@ -140,12 +144,15 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
 
             {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-amber-700 hover:text-amber-800 hover:bg-amber-50 rounded-xl transition-all"
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <div className="md:hidden flex items-center space-x-2">
+              {(!user || user.role === 'buyer') && <CartIcon />}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 text-amber-700 hover:text-amber-800 hover:bg-amber-50 rounded-xl transition-all"
+              >
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -212,6 +219,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <main className="flex-1">
         {children}
       </main>
+
+      {/* Cart Sidebar */}
+      <CartSidebar />
 
       {/* Footer */}
       <footer className="bg-white border-t border-amber-100 mt-16">

@@ -14,6 +14,7 @@ import {
   Trash2
 } from 'lucide-react';
 import { useApp } from '../contexts/AppContext';
+import { useCart } from '../contexts/CartContext';
 import { ProductCard } from '../components/ProductCard';
 import { Product } from '../types';
 
@@ -24,6 +25,7 @@ interface HamperItem {
 
 export const HamperBuilderPage: React.FC = () => {
   const { products } = useApp();
+  const { addToCart } = useCart();
   const [hamperItems, setHamperItems] = useState<HamperItem[]>([]);
   const [hamperName, setHamperName] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -74,6 +76,19 @@ export const HamperBuilderPage: React.FC = () => {
   const clearHamper = () => {
     setHamperItems([]);
     setHamperName('');
+  };
+
+  const addHamperToCart = () => {
+    hamperItems.forEach(item => {
+      addToCart(item.product, {
+        quantity: item.quantity,
+        isGift: true,
+        giftPackaging: true,
+        giftNote: `Part of ${hamperName || 'Custom Hamper'}`
+      });
+    });
+    clearHamper();
+    setShowCheckout(false);
   };
 
   return (
@@ -132,10 +147,7 @@ export const HamperBuilderPage: React.FC = () => {
                   transition={{ delay: index * 0.05 }}
                   className="relative"
                 >
-                  <ProductCard 
-                    product={product} 
-                    onAddToCart={addToHamper}
-                  />
+                  <ProductCard product={product} />
                   {/* Quick Add Button */}
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -251,7 +263,7 @@ export const HamperBuilderPage: React.FC = () => {
                         className="w-full bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 shadow-lg"
                       >
                         <ShoppingBag className="w-4 h-4" />
-                        <span>Checkout Hamper</span>
+                        <span>Add to Cart</span>
                       </motion.button>
                       
                       <button
@@ -333,13 +345,10 @@ export const HamperBuilderPage: React.FC = () => {
                       Continue Shopping
                     </button>
                     <button
-                      onClick={() => {
-                        // Handle checkout logic here
-                        alert('Hamper checkout functionality would be implemented here!');
-                      }}
+                      onClick={addHamperToCart}
                       className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-3 px-6 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 shadow-lg"
                     >
-                      <span>Proceed to Payment</span>
+                      <span>Add to Cart</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
