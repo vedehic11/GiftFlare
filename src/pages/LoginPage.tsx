@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, Sparkles } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Sparkles, AlertCircle, Info } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export const LoginPage: React.FC = () => {
@@ -24,10 +24,11 @@ export const LoginPage: React.FC = () => {
       if (success) {
         navigate('/');
       } else {
-        setError('Invalid email or password');
+        setError('Invalid email or password. Please check your credentials and try again.');
       }
     } catch (error) {
-      setError('An error occurred. Please try again.');
+      console.error('Login error:', error);
+      setError('An error occurred while signing in. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -56,11 +57,38 @@ export const LoginPage: React.FC = () => {
             </p>
           </div>
 
+          {/* Demo Account Info */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-start">
+              <Info className="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
+              <div>
+                <h3 className="text-sm font-medium text-blue-800">Demo Accounts</h3>
+                <div className="mt-2 text-xs text-blue-700 space-y-1">
+                  <p><strong>Buyer:</strong> buyer@demo.com / password123</p>
+                  <p><strong>Seller:</strong> seller@demo.com / password123</p>
+                  <p><strong>Admin:</strong> admin@demo.com / password123</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
-                {error}
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-50 border border-red-200 rounded-lg p-4"
+              >
+                <div className="flex items-start">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-red-800">{error}</p>
+                    <p className="text-xs text-red-600 mt-1">
+                      Don't have an account? <Link to="/register" className="underline hover:no-underline">Create one here</Link>
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
             )}
 
             {/* Email */}
@@ -76,7 +104,7 @@ export const LoginPage: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
                   placeholder="Enter your email"
                 />
                 <Mail className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
@@ -96,14 +124,14 @@ export const LoginPage: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full px-3 py-2 pl-10 pr-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  className="block w-full px-3 py-2 pl-10 pr-10 border border-amber-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-colors"
                   placeholder="Enter your password"
                 />
                 <Lock className="w-5 h-5 text-amber-500 absolute left-3 top-2.5" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-2.5 text-amber-500 hover:text-amber-700"
+                  className="absolute right-3 top-2.5 text-amber-500 hover:text-amber-700 transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -116,16 +144,23 @@ export const LoginPage: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg font-medium transition-all disabled:opacity-50 shadow-lg"
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Signing in...
+                  </div>
+                ) : (
+                  'Sign in'
+                )}
               </motion.button>
             </div>
 
             <div className="text-center">
               <p className="text-sm text-amber-700">
                 Don't have an account?{' '}
-                <Link to="/register" className="text-amber-600 hover:text-amber-800 font-medium">
+                <Link to="/register" className="text-amber-600 hover:text-amber-800 font-medium transition-colors">
                   Sign up here
                 </Link>
               </p>

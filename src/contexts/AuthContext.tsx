@@ -87,13 +87,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
-        console.error('Login error:', error);
+        console.error('Login error:', error.message);
         return false;
       }
 
       return true;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Unexpected login error:', error);
       return false;
     }
   };
@@ -114,7 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (error) {
-        console.error('Registration error:', error);
+        console.error('Registration error:', error.message);
         return false;
       }
 
@@ -133,21 +133,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
 
         if (profileError) {
-          console.error('Profile creation error:', profileError);
+          console.error('Profile creation error:', profileError.message);
           return false;
         }
       }
 
       return true;
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Unexpected registration error:', error);
       return false;
     }
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
