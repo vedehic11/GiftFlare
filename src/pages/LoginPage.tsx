@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, Sparkles, AlertCircle, Info } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Sparkles, AlertCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 export const LoginPage: React.FC = () => {
@@ -55,21 +55,6 @@ export const LoginPage: React.FC = () => {
             <p className="mt-2 text-sm text-amber-700">
               Sign in to your account to continue
             </p>
-          </div>
-
-          {/* Demo Account Info */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-start">
-              <Info className="w-5 h-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
-              <div>
-                <h3 className="text-sm font-medium text-blue-800">Demo Accounts</h3>
-                <div className="mt-2 text-xs text-blue-700 space-y-1">
-                  <p><strong>Buyer:</strong> buyer@demo.com / password123</p>
-                  <p><strong>Seller:</strong> seller@demo.com / password123</p>
-                  <p><strong>Admin:</strong> admin@demo.com / password123</p>
-                </div>
-              </div>
-            </div>
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

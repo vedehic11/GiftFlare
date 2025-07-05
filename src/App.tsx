@@ -20,6 +20,7 @@ import { GiftSuggesterPage } from './pages/GiftSuggesterPage';
 import { HamperBuilderPage } from './pages/HamperBuilderPage';
 import { SellerDashboardPage } from './pages/SellerDashboardPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { OrderHistoryPage } from './pages/OrderHistoryPage';
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
                     <Route path="/hamper-builder" element={<HamperBuilderPage />} />
                     
                     {/* Protected Routes */}
+                    <Route 
+                      path="/orders" 
+                      element={
+                        <ProtectedRoute>
+                          <OrderHistoryPage />
+                        </ProtectedRoute>
+                      } 
+                    />
                     <Route 
                       path="/seller/dashboard" 
                       element={

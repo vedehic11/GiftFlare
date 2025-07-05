@@ -14,11 +14,17 @@ import {
   Video,
   Plus,
   Edit,
-  Trash2
+  Trash2,
+  Send,
+  Bell,
+  MessageSquare,
+  AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useApp } from '../contexts/AppContext';
+import { useNotifications } from '../contexts/NotificationContext';
 import { supabase } from '../lib/supabase';
+import toast from 'react-hot-toast';
 
 interface HeroVideo {
   id: string;
@@ -32,6 +38,13 @@ interface HeroVideo {
   order_index: number;
 }
 
+interface NotificationForm {
+  type: 'order' | 'delivery' | 'system' | 'chat' | 'promotion';
+  title: string;
+  message: string;
+  targetUsers: 'all' | 'buyers' | 'sellers';
+}
+
 export const AdminDashboardPage: React.FC = () => {
   const { user } = useAuth();
   const { 
@@ -42,11 +55,13 @@ export const AdminDashboardPage: React.FC = () => {
     updateDeliveryCity,
     updateTheme 
   } = useApp();
+  const { createNotification } = useNotifications();
   
   const [activeTab, setActiveTab] = useState('products');
   const [heroVideos, setHeroVideos] = useState<HeroVideo[]>([]);
   const [showVideoForm, setShowVideoForm] = useState(false);
   const [editingVideo, setEditingVideo] = useState<HeroVideo | null>(null);
+  const [showNotificationForm, setShowNotificationForm] = useState(false);
   const [videoForm, setVideoForm] = useState({
     title: '',
     description: '',
@@ -56,6 +71,12 @@ export const AdminDashboardPage: React.FC = () => {
     location: '',
     is_active: true,
     order_index: 1
+  });
+  const [notificationForm, setNotificationForm] = useState<NotificationForm>({
+    type: 'system',
+    title: '',
+    message: '',
+    targetUsers: 'all'
   });
 
   const pendingProducts = products.filter(p => p.status === 'pending');
@@ -85,15 +106,30 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   const handleProductApproval = async (productId: string, status: 'approved' | 'rejected') => {
-    await updateProduct(productId, { status });
+    const success = await updateProduct(productId, { status });
+    if (success) {
+      toast.success(`Product ${status} successfully`);
+    } else {
+      toast.error('Failed to update product status');
+    }
   };
 
   const handleDeliveryCityToggle = async (cityId: string, isActive: boolean) => {
-    await updateDeliveryCity(cityId, isActive);
+    const success = await updateDeliveryCity(cityId, isActive);
+    if (success) {
+      toast.success(`Delivery city ${isActive ? 'activated' : 'deactivated'}`);
+    } else {
+      toast.error('Failed to update delivery city');
+    }
   };
 
   const handleThemeChange = async (themeName: string) => {
-    await updateTheme(themeName);
+    const success = await updateTheme(themeName);
+    if (success) {
+      toast.success('Theme updated successfully');
+    } else {
+      toast.error('Failed to update theme');
+    }
   };
 
   const handleVideoSubmit = async (e: React.FormEvent) => {
@@ -107,12 +143,14 @@ export const AdminDashboardPage: React.FC = () => {
           .eq('id', editingVideo.id);
 
         if (error) throw error;
+        toast.success('Video updated successfully');
       } else {
         const { error } = await supabase
           .from('hero_videos')
           .insert([videoForm]);
 
         if (error) throw error;
+        toast.success('Video added successfully');
       }
 
       setVideoForm({
@@ -130,6 +168,7 @@ export const AdminDashboardPage: React.FC = () => {
       fetchHeroVideos();
     } catch (error) {
       console.error('Error saving video:', error);
+      toast.error('Failed to save video');
     }
   };
 
@@ -142,9 +181,11 @@ export const AdminDashboardPage: React.FC = () => {
           .eq('id', videoId);
 
         if (error) throw error;
+        toast.success('Video deleted successfully');
         fetchHeroVideos();
       } catch (error) {
         console.error('Error deleting video:', error);
+        toast.error('Failed to delete video');
       }
     }
   };
@@ -164,8 +205,58 @@ export const AdminDashboardPage: React.FC = () => {
     setShowVideoForm(true);
   };
 
+  const handleSendNotification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      // Get target users based on selection
+      let targetUserIds: string[] = [];
+      
+      if (notificationForm.targetUsers === 'all') {
+        const { data } = await supabase
+          .from('profiles')
+          .select('id');
+        targetUserIds = data?.map(p => p.id) || [];
+      } else {
+        const { data } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('role', notificationForm.targetUsers === 'buyers' ? 'buyer' : 'seller');
+        targetUserIds = data?.map(p => p.id) || [];
+      }
+
+      // Send notification to each user
+      const notifications = targetUserIds.map(userId => ({
+        user_id: userId,
+        type: notificationForm.type,
+        title: notificationForm.title,
+        message: notificationForm.message,
+        data: { sent_by: 'admin', timestamp: new Date().toISOString() }
+      }));
+
+      const { error } = await supabase
+        .from('notifications')
+        .insert(notifications);
+
+      if (error) throw error;
+
+      toast.success(`Notification sent to ${targetUserIds.length} users`);
+      setNotificationForm({
+        type: 'system',
+        title: '',
+        message: '',
+        targetUsers: 'all'
+      });
+      setShowNotificationForm(false);
+    } catch (error) {
+      console.error('Error sending notification:', error);
+      toast.error('Failed to send notification');
+    }
+  };
+
   const tabs = [
     { id: 'products', name: 'Products', icon: Package },
+    { id: 'notifications', name: 'Send Notifications', icon: Bell },
     { id: 'videos', name: 'Hero Videos', icon: Video },
     { id: 'delivery', name: 'Delivery Cities', icon: MapPin },
     { id: 'themes', name: 'Themes', icon: Palette }
@@ -221,14 +312,14 @@ export const AdminDashboardPage: React.FC = () => {
         {/* Tabs */}
         <div className="bg-white rounded-2xl shadow-sm border border-amber-100 overflow-hidden">
           <div className="border-b border-amber-100">
-            <nav className="flex">
+            <nav className="flex overflow-x-auto">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center space-x-2 px-6 py-4 font-medium transition-colors ${
+                    className={`flex items-center space-x-2 px-6 py-4 font-medium transition-colors whitespace-nowrap ${
                       activeTab === tab.id
                         ? 'text-amber-800 border-b-2 border-amber-600 bg-amber-50'
                         : 'text-amber-600 hover:text-amber-800 hover:bg-amber-50'
@@ -298,6 +389,125 @@ export const AdminDashboardPage: React.FC = () => {
                     ))}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Notifications Tab */}
+            {activeTab === 'notifications' && (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-lg font-semibold text-amber-900">
+                    Send Notifications to Users
+                  </h2>
+                  <button
+                    onClick={() => setShowNotificationForm(true)}
+                    className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>Send Notification</span>
+                  </button>
+                </div>
+
+                {showNotificationForm && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
+                    <h3 className="text-lg font-semibold text-amber-900 mb-4">Create Notification</h3>
+                    <form onSubmit={handleSendNotification} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-amber-800 mb-2">
+                            Notification Type
+                          </label>
+                          <select
+                            value={notificationForm.type}
+                            onChange={(e) => setNotificationForm({...notificationForm, type: e.target.value as any})}
+                            className="w-full border border-amber-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                          >
+                            <option value="system">System</option>
+                            <option value="order">Order</option>
+                            <option value="delivery">Delivery</option>
+                            <option value="promotion">Promotion</option>
+                            <option value="chat">Chat</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-amber-800 mb-2">
+                            Target Users
+                          </label>
+                          <select
+                            value={notificationForm.targetUsers}
+                            onChange={(e) => setNotificationForm({...notificationForm, targetUsers: e.target.value as any})}
+                            className="w-full border border-amber-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                          >
+                            <option value="all">All Users</option>
+                            <option value="buyers">Buyers Only</option>
+                            <option value="sellers">Sellers Only</option>
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-amber-800 mb-2">
+                          Title
+                        </label>
+                        <input
+                          type="text"
+                          value={notificationForm.title}
+                          onChange={(e) => setNotificationForm({...notificationForm, title: e.target.value})}
+                          className="w-full border border-amber-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                          placeholder="Notification title"
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-amber-800 mb-2">
+                          Message
+                        </label>
+                        <textarea
+                          value={notificationForm.message}
+                          onChange={(e) => setNotificationForm({...notificationForm, message: e.target.value})}
+                          className="w-full border border-amber-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                          rows={4}
+                          placeholder="Notification message"
+                          required
+                        />
+                      </div>
+                      
+                      <div className="flex space-x-4">
+                        <button
+                          type="submit"
+                          className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg transition-colors flex items-center space-x-2"
+                        >
+                          <Send className="w-4 h-4" />
+                          <span>Send Notification</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowNotificationForm(false)}
+                          className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-lg transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start space-x-3">
+                    <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-blue-900">Notification Guidelines</h4>
+                      <ul className="text-sm text-blue-800 mt-2 space-y-1">
+                        <li>• Use clear, concise titles and messages</li>
+                        <li>• System notifications for platform updates</li>
+                        <li>• Order notifications for order-related updates</li>
+                        <li>• Promotion notifications for offers and deals</li>
+                        <li>• Delivery notifications for shipping updates</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
