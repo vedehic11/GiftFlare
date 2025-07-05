@@ -53,6 +53,9 @@ class OrderService {
       // Send confirmation communications
       await this.sendOrderConfirmation(data);
 
+      // Create automatic notification for order received
+      await this.createOrderNotification(data, 'order_received');
+
       return data;
     } catch (error) {
       console.error('Error in createOrder:', error);
@@ -66,12 +69,14 @@ class OrderService {
     trackingNumber?: string
   ): Promise<boolean> {
     try {
-      // Use the database function to update status and create notification
-      const { error } = await supabase.rpc('update_order_status', {
-        p_order_id: orderId,
-        p_status: status,
-        p_tracking_number: trackingNumber
-      });
+      const { error } = await supabase
+        .from('orders')
+        .update({ 
+          status, 
+          tracking_number: trackingNumber,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', orderId);
 
       if (error) {
         console.error('Error updating order status:', error);
@@ -93,12 +98,79 @@ class OrderService {
 
       if (orderData) {
         await this.sendStatusUpdateCommunications(orderData, status, trackingNumber);
+        await this.createOrderNotification(orderData, this.getNotificationTypeForStatus(status));
       }
 
       return true;
     } catch (error) {
       console.error('Error in updateOrderStatus:', error);
       return false;
+    }
+  }
+
+  private getNotificationTypeForStatus(status: string): string {
+    switch (status) {
+      case 'confirmed':
+        return 'order_confirmed';
+      case 'shipped':
+        return 'order_dispatched';
+      case 'delivered':
+        return 'order_delivered';
+      case 'cancelled':
+        return 'order_cancelled';
+      default:
+        return 'order_update';
+    }
+  }
+
+  private async createOrderNotification(orderData: OrderData, notificationType: string) {
+    try {
+      const notificationMessages = {
+        order_received: {
+          title: 'Order Received',
+          message: `Your order #${orderData.id.slice(-8)} has been received and is being processed.`
+        },
+        order_confirmed: {
+          title: 'Order Confirmed',
+          message: `Your order #${orderData.id.slice(-8)} has been confirmed and will be prepared for shipping.`
+        },
+        order_dispatched: {
+          title: 'Order Dispatched',
+          message: `Your order #${orderData.id.slice(-8)} has been dispatched${orderData.tracking_number ? ` with tracking number ${orderData.tracking_number}` : ''}.`
+        },
+        delivery_partner_assigned: {
+          title: 'Delivery Partner Assigned',
+          message: `A delivery partner has been assigned to your order #${orderData.id.slice(-8)}. You'll be contacted shortly.`
+        },
+        order_delivered: {
+          title: 'Order Delivered',
+          message: `Your order #${orderData.id.slice(-8)} has been delivered successfully. Hope you love your handmade treasures!`
+        },
+        order_cancelled: {
+          title: 'Order Cancelled',
+          message: `Your order #${orderData.id.slice(-8)} has been cancelled. If you have any questions, please contact support.`
+        }
+      };
+
+      const notification = notificationMessages[notificationType as keyof typeof notificationMessages];
+      
+      if (notification) {
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: orderData.user_id,
+            type: 'order',
+            title: notification.title,
+            message: notification.message,
+            data: { 
+              order_id: orderData.id, 
+              status: orderData.status,
+              notification_type: notificationType
+            }
+          });
+      }
+    } catch (error) {
+      console.error('Error creating order notification:', error);
     }
   }
 
@@ -163,6 +235,8 @@ class OrderService {
                   phoneNumber,
                   orderData.user_id
                 );
+                // Create delivery partner assigned notification
+                await this.createOrderNotification(orderData, 'delivery_partner_assigned');
               } else {
                 await smsService.sendShippingUpdateSMS(
                   orderData.id,

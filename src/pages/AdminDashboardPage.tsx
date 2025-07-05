@@ -109,6 +109,17 @@ export const AdminDashboardPage: React.FC = () => {
     const success = await updateProduct(productId, { status });
     if (success) {
       toast.success(`Product ${status} successfully`);
+      
+      // Send notification to seller
+      const product = products.find(p => p.id === productId);
+      if (product) {
+        await createNotification({
+          type: 'system',
+          title: `Product ${status}`,
+          message: `Your product "${product.name}" has been ${status} by admin.`,
+          data: { product_id: productId, status }
+        });
+      }
     } else {
       toast.error('Failed to update product status');
     }

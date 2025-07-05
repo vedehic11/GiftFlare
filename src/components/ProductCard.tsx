@@ -26,8 +26,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -8 }}
-      className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group border border-amber-100"
+      whileHover={{ y: -4 }}
+      className="bg-white rounded-2xl md:rounded-3xl shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden group border border-amber-100"
       onHoverStart={() => setShowQuickAdd(true)}
       onHoverEnd={() => setShowQuickAdd(false)}
     >
@@ -36,21 +36,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover group-hover:scale-110 transition-transform duration-700"
+          className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover group-hover:scale-110 transition-transform duration-700"
         />
         
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
         {/* Instant Delivery Badge */}
-        <div className="absolute top-2 left-2 md:top-4 md:left-4">
+        <div className="absolute top-2 left-2 md:top-3 md:left-3">
           <InstantDeliveryBadge product={product} />
         </div>
 
         {/* Video Badge */}
         {product.videoUrl && (
-          <div className="absolute top-2 right-2 md:top-4 md:right-4">
-            <div className="bg-black/60 backdrop-blur-sm text-white p-2 md:p-2.5 rounded-full shadow-lg">
+          <div className="absolute top-2 right-2 md:top-3 md:right-3">
+            <div className="bg-black/60 backdrop-blur-sm text-white p-1.5 md:p-2 rounded-full shadow-lg">
               <Play className="w-3 h-3 md:w-4 md:h-4" />
             </div>
           </div>
@@ -61,10 +61,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsLiked(!isLiked)}
-          className="absolute bottom-2 right-2 md:bottom-4 md:right-4 bg-white/90 backdrop-blur-sm p-2 md:p-3 rounded-full hover:bg-white transition-all shadow-lg"
+          className="absolute bottom-2 right-2 md:bottom-3 md:right-3 bg-white/90 backdrop-blur-sm p-2 md:p-2.5 rounded-full hover:bg-white transition-all shadow-lg"
         >
           <Heart 
-            className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${
+            className={`w-3 h-3 md:w-4 md:h-4 transition-colors ${
               isLiked ? 'text-amber-600 fill-current' : 'text-amber-700'
             }`} 
           />
@@ -77,13 +77,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="absolute bottom-2 left-2 md:bottom-4 md:left-4 hidden md:flex space-x-2"
+              className="absolute bottom-2 left-2 md:bottom-3 md:left-3 hidden md:flex space-x-2"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleQuickAdd}
-                className="bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all shadow-lg flex items-center space-x-1 md:space-x-2"
+                className="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all shadow-lg flex items-center space-x-1 md:space-x-2"
               >
                 <ShoppingBag className="w-3 h-3 md:w-4 md:h-4" />
                 <span className="hidden sm:inline">Add to Cart</span>
@@ -93,7 +93,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleGiftAdd}
-                className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-2 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all shadow-lg flex items-center space-x-1 md:space-x-2"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all shadow-lg flex items-center space-x-1 md:space-x-2"
               >
                 <Gift className="w-3 h-3 md:w-4 md:h-4" />
                 <span className="hidden sm:inline">Gift</span>
@@ -104,18 +104,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Product Info - Mobile Optimized */}
-      <div className="p-4 md:p-6">
-        <div className="flex items-start justify-between mb-2 md:mb-3">
-          <h3 className="font-bold text-amber-900 text-base md:text-lg line-clamp-2 leading-tight flex-1 mr-2">
+      <div className="p-3 md:p-4 lg:p-5">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="font-bold text-amber-900 text-sm md:text-base lg:text-lg line-clamp-2 leading-tight flex-1 mr-2">
             {product.name}
           </h3>
-          <span className="text-lg md:text-2xl font-bold text-amber-600 whitespace-nowrap">
+          <span className="text-base md:text-lg lg:text-xl font-bold text-amber-600 whitespace-nowrap">
             ₹{product.price.toLocaleString()}
           </span>
         </div>
 
         {/* Seller Info */}
-        <div className="flex items-center space-x-2 mb-3 md:mb-4">
+        <div className="flex items-center space-x-1 md:space-x-2 mb-2 md:mb-3">
           <div className="flex items-center space-x-1">
             <span className="text-xs md:text-sm font-medium text-amber-800">{product.sellerName}</span>
             <Verified className="w-3 h-3 md:w-4 md:h-4 text-blue-500" />
@@ -127,17 +127,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         </div>
 
-        <p className="text-amber-700 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2 leading-relaxed">
+        <p className="text-amber-700 text-xs md:text-sm mb-2 md:mb-3 line-clamp-2 leading-relaxed">
           {product.description}
         </p>
 
         {/* Delivery Time */}
-        <div className="mb-3 md:mb-4">
+        <div className="mb-2 md:mb-3">
           <DeliveryTimeEstimate product={product} />
         </div>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1 md:gap-2 mb-4 md:mb-5">
+        <div className="flex flex-wrap gap-1 md:gap-2 mb-3 md:mb-4">
           {product.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
@@ -149,7 +149,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* Rating (Mock) */}
-        <div className="flex items-center space-x-2 mb-4 md:mb-5">
+        <div className="flex items-center space-x-1 md:space-x-2 mb-3 md:mb-4">
           <div className="flex items-center space-x-1">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -170,19 +170,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleQuickAdd}
-            className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-2.5 md:py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
+            className="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-2 md:py-2.5 lg:py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
           >
-            <ShoppingBag className="w-4 h-4" />
-            <span className="text-sm md:text-base">Add to Cart</span>
+            <ShoppingBag className="w-3 h-3 md:w-4 md:h-4" />
+            <span className="text-xs md:text-sm lg:text-base">Add to Cart</span>
           </motion.button>
           
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleGiftAdd}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-3 md:px-4 py-2.5 md:py-3 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center"
+            className="bg-orange-600 hover:bg-orange-700 text-white px-2 md:px-3 lg:px-4 py-2 md:py-2.5 lg:py-3 rounded-xl transition-all duration-300 shadow-lg flex items-center justify-center"
           >
-            <Gift className="w-4 h-4" />
+            <Gift className="w-3 h-3 md:w-4 md:h-4" />
           </motion.button>
         </div>
       </div>
