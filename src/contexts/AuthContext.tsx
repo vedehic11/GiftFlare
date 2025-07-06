@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import { User } from '../types';
+import toast from 'react-hot-toast';
 
 interface AuthContextType {
   user: User | null;
@@ -26,30 +27,61 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let mounted = true;
+
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        fetchUserProfile(session.user);
-      } else {
-        setIsLoading(false);
+    const getInitialSession = async () => {
+      try {
+        console.log('Getting initial session...');
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+          if (mounted) setIsLoading(false);
+          return;
+        }
+        
+        if (session?.user && mounted) {
+          console.log('Found existing session for:', session.user.email);
+          await fetchUserProfile(session.user);
+        } else {
+          console.log('No existing session found');
+          if (mounted) setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Error in getInitialSession:', error);
+        if (mounted) setIsLoading(false);
       }
-    });
+    };
+
+    getInitialSession();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
+      console.log('Auth state changed:', event, session?.user?.email);
+      
+      if (!mounted) return;
+
+      if (event === 'SIGNED_IN' && session?.user) {
         await fetchUserProfile(session.user);
-      } else {
+      } else if (event === 'SIGNED_OUT') {
         setUser(null);
         setIsLoading(false);
+      } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+        console.log('Token refreshed for:', session.user.email);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const fetchUserProfile = async (supabaseUser: SupabaseUser) => {
     try {
+      console.log('Fetching profile for user:', supabaseUser.id);
+      
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
@@ -58,8 +90,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error('Error fetching profile:', error);
-        setUser(null);
+        
+        // If profile doesn't exist, create one
+        if (error.code === 'PGRST116') {
+          console.log('Profile not found, creating default profile');
+          const defaultName = supabaseUser.user_metadata?.name || 
+                             supabaseUser.email?.split('@')[0] || 
+                             'User';
+          
+          const { data: newProfile, error: insertError } = await supabase
+            .from('profiles')
+            .insert({
+              id: supabaseUser.id,
+              name: defaultName,
+              role: 'buyer',
+              city: 'Mumbai',
+              is_verified: false
+            })
+            .select()
+            .single();
+          
+          if (insertError) {
+            console.error('Error creating profile:', insertError);
+            toast.error('Failed to create user profile');
+            setUser(null);
+          } else if (newProfile) {
+            console.log('Profile created successfully:', newProfile);
+            setUser({
+              id: newProfile.id,
+              email: supabaseUser.email || '',
+              name: newProfile.name,
+              role: newProfile.role,
+              city: newProfile.city || undefined,
+              isVerified: newProfile.is_verified,
+              businessName: newProfile.business_name || undefined,
+              description: newProfile.description || undefined
+            });
+          }
+        } else {
+          toast.error('Failed to load user profile');
+          setUser(null);
+        }
       } else if (profile) {
+        console.log('Profile loaded successfully:', profile.name);
         setUser({
           id: profile.id,
           email: supabaseUser.email || '',
@@ -73,6 +146,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error('Error in fetchUserProfile:', error);
+      toast.error('Failed to load user data');
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -81,20 +155,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
+      setIsLoading(true);
+      console.log('Attempting login for:', email);
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
         password
       });
 
       if (error) {
-        console.error('Login error:', error.message);
+        console.error('Login error:', error);
+        
+        // Provide more specific error messages
+        if (error.message.includes('Invalid login credentials')) {
+          toast.error('Invalid email or password. Please check your credentials.');
+        } else if (error.message.includes('Email not confirmed')) {
+          toast.error('Please check your email and confirm your account.');
+        } else {
+          toast.error(error.message || 'Login failed');
+        }
         return false;
       }
 
-      return true;
+      if (data.user) {
+        console.log('Login successful for:', data.user.email);
+        toast.success('Welcome back!');
+        return true;
+      }
+
+      return false;
     } catch (error) {
       console.error('Unexpected login error:', error);
+      toast.error('An unexpected error occurred. Please try again.');
       return false;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -108,18 +203,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     description?: string
   ): Promise<boolean> => {
     try {
+      setIsLoading(true);
+      console.log('Attempting registration for:', email);
+      
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password
+        email: email.trim().toLowerCase(),
+        password,
+        options: {
+          data: {
+            name,
+            role,
+            city,
+            business_name: businessName,
+            description
+          }
+        }
       });
 
       if (error) {
-        console.error('Registration error:', error.message);
+        console.error('Registration error:', error);
+        
+        if (error.message.includes('already registered')) {
+          toast.error('This email is already registered. Please try logging in.');
+        } else {
+          toast.error(error.message || 'Registration failed');
+        }
         return false;
       }
 
       if (data.user) {
-        // Create profile
+        console.log('Registration successful for:', data.user.email);
+        
+        // Create profile immediately
         const { error: profileError } = await supabase
           .from('profiles')
           .insert({
@@ -133,24 +248,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           });
 
         if (profileError) {
-          console.error('Profile creation error:', profileError.message);
+          console.error('Profile creation error:', profileError);
+          toast.error('Account created but profile setup failed. Please contact support.');
           return false;
         }
+
+        toast.success('Account created successfully! Welcome to GiftFlare!');
+        return true;
       }
 
-      return true;
+      return false;
     } catch (error) {
       console.error('Unexpected registration error:', error);
+      toast.error('An unexpected error occurred. Please try again.');
       return false;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      await supabase.auth.signOut();
-      setUser(null);
+      console.log('Logging out user...');
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Logout error:', error);
+        toast.error('Logout failed');
+      } else {
+        setUser(null);
+        toast.success('Logged out successfully');
+      }
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Unexpected logout error:', error);
+      toast.error('Logout failed');
     }
   };
 

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Product, Seller, Theme, DeliveryCity } from '../types';
 import { useAuth } from './AuthContext';
+import toast from 'react-hot-toast';
 
 interface AppContextType {
   products: Product[];
@@ -29,9 +30,9 @@ export const useApp = () => {
 const defaultTheme: Theme = {
   name: 'default',
   colors: {
-    primary: '#ed7bb4',
-    secondary: '#fab9db',
-    accent: '#FDE047'
+    primary: '#7c3aed',
+    secondary: '#a855f7',
+    accent: '#06b6d4'
   },
   isActive: true
 };
@@ -58,6 +59,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       ]);
     } catch (error) {
       console.error('Error refreshing data:', error);
+      toast.error('Failed to load data');
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +67,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const fetchProducts = async () => {
     try {
+      console.log('Fetching products...');
+      
       const { data, error } = await supabase
         .from('products')
         .select(`
@@ -78,10 +82,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (error) {
         console.error('Error fetching products:', error);
+        toast.error('Failed to load products');
         return;
       }
 
-      const formattedProducts: Product[] = data.map(product => ({
+      console.log('Products fetched:', data?.length || 0);
+
+      const formattedProducts: Product[] = (data || []).map(product => ({
         id: product.id,
         sellerId: product.seller_id,
         sellerName: product.profiles?.name || 'Unknown Seller',
@@ -94,13 +101,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         instantDeliveryEligible: product.instant_delivery_eligible,
         status: product.status,
         category: product.category,
-        tags: product.tags,
+        tags: product.tags || [],
         createdAt: product.created_at
       }));
 
       setProducts(formattedProducts);
     } catch (error) {
       console.error('Error in fetchProducts:', error);
+      toast.error('Failed to load products');
     }
   };
 
@@ -116,7 +124,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return;
       }
 
-      const formattedCities: DeliveryCity[] = data.map(city => ({
+      const formattedCities: DeliveryCity[] = (data || []).map(city => ({
         id: city.id,
         name: city.name,
         isActive: city.is_active
@@ -136,7 +144,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         .eq('is_active', true)
         .single();
 
-      if (error) {
+      if (error && error.code !== 'PGRST116') {
         console.error('Error fetching theme:', error);
         return;
       }
@@ -154,7 +162,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const addProduct = async (productData: Omit<Product, 'id' | 'createdAt' | 'sellerName'>): Promise<boolean> => {
-    if (!user) return false;
+    if (!user) {
+      toast.error('You must be logged in to add products');
+      return false;
+    }
 
     try {
       const { error } = await supabase
@@ -162,7 +173,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         .insert({
           seller_id: productData.sellerId,
           name: productData.name,
-          price: productData.price * 100, // Convert to paise
+          price: Math.round(productData.price * 100), // Convert to paise
           image_url: productData.image,
           description: productData.description,
           video_url: productData.videoUrl,
@@ -174,13 +185,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (error) {
         console.error('Error adding product:', error);
+        toast.error('Failed to add product');
         return false;
       }
 
+      toast.success('Product added successfully!');
       await fetchProducts();
       return true;
     } catch (error) {
       console.error('Error in addProduct:', error);
+      toast.error('Failed to add product');
       return false;
     }
   };
@@ -190,7 +204,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const dbUpdates: any = {};
       
       if (updates.status) dbUpdates.status = updates.status;
-      if (updates.price) dbUpdates.price = updates.price * 100; // Convert to paise
+      if (updates.price) dbUpdates.price = Math.round(updates.price * 100); // Convert to paise
       if (updates.name) dbUpdates.name = updates.name;
       if (updates.description) dbUpdates.description = updates.description;
       if (updates.image) dbUpdates.image_url = updates.image;
@@ -206,13 +220,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (error) {
         console.error('Error updating product:', error);
+        toast.error('Failed to update product');
         return false;
       }
 
+      toast.success('Product updated successfully!');
       await fetchProducts();
       return true;
     } catch (error) {
       console.error('Error in updateProduct:', error);
+      toast.error('Failed to update product');
       return false;
     }
   };
@@ -226,13 +243,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (error) {
         console.error('Error updating delivery city:', error);
+        toast.error('Failed to update delivery city');
         return false;
       }
 
+      toast.success('Delivery city updated successfully!');
       await fetchDeliveryCities();
       return true;
     } catch (error) {
       console.error('Error in updateDeliveryCity:', error);
+      toast.error('Failed to update delivery city');
       return false;
     }
   };
@@ -253,24 +273,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
       if (error) {
         console.error('Error updating theme:', error);
+        toast.error('Failed to update theme');
         return false;
       }
 
+      toast.success('Theme updated successfully!');
       await fetchCurrentTheme();
       return true;
     } catch (error) {
       console.error('Error in updateTheme:', error);
+      toast.error('Failed to update theme');
       return false;
     }
-  };
-
-  // Mock sellers data for now (can be implemented later if needed)
-  const addSeller = async (seller: Seller) => {
-    // Implementation would go here
-  };
-
-  const updateSeller = async (sellerId: string, updates: Partial<Seller>) => {
-    // Implementation would go here
   };
 
   return (

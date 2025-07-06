@@ -15,25 +15,25 @@ export const HomePage: React.FC = () => {
       icon: Heart,
       title: 'Handmade with Love',
       description: 'Every product is crafted by passionate artisans who pour their heart into their work.',
-      color: 'bg-amber-600'
+      color: 'bg-rose-600'
     },
     {
       icon: Truck,
       title: 'Instant Delivery',
       description: 'Get your gifts delivered within hours in supported cities.',
-      color: 'bg-orange-600'
+      color: 'bg-blue-600'
     },
     {
       icon: Users,
       title: 'Support Small Business',
       description: 'Directly support local artisans and small businesses in your community.',
-      color: 'bg-yellow-600'
+      color: 'bg-emerald-600'
     },
     {
       icon: Award,
       title: 'Verified Makers',
       description: 'All our sellers are verified and committed to quality craftsmanship.',
-      color: 'bg-amber-700'
+      color: 'bg-indigo-600'
     }
   ];
 
@@ -43,26 +43,26 @@ export const HomePage: React.FC = () => {
       <VideoCarousel />
 
       {/* Features Section - Mobile Optimized */}
-      <section className="py-8 md:py-16 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8 md:mb-12"
+            className="text-center mb-16 md:mb-20"
           >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-amber-900 mb-3 md:mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
               Why Choose{' '}
-              <span className="text-amber-600">
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 GiftFlare?
               </span>
             </h2>
-            <p className="text-base md:text-lg text-amber-700 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
               Connect with passionate makers and find the perfect handcrafted gifts that tell a story.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
@@ -72,16 +72,16 @@ export const HomePage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -2 }}
-                  className="text-center p-4 md:p-6 rounded-2xl bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 hover:shadow-lg transition-all duration-300 border border-amber-100"
+                  whileHover={{ y: -4 }}
+                  className="text-center p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-50 to-blue-50 hover:shadow-xl transition-all duration-300 border border-slate-200"
                 >
-                  <div className={`${feature.color} w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg`}>
-                    <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                  <div className={`${feature.color} w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+                    <Icon className="w-10 h-10 md:w-12 md:h-12 text-white" />
                   </div>
-                  <h3 className="text-base md:text-lg font-bold text-amber-900 mb-2 md:mb-3">
+                  <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4">
                     {feature.title}
                   </h3>
-                  <p className="text-sm md:text-base text-amber-700 leading-relaxed">
+                  <p className="text-base md:text-lg text-slate-600 leading-relaxed">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -92,26 +92,26 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Featured Products - Mobile Optimized */}
-      <section id="products-section" className="py-8 md:py-16 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+      <section id="products-section" className="py-16 md:py-24 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8 md:mb-12"
+            className="text-center mb-16 md:mb-20"
           >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-amber-900 mb-3 md:mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6">
               Featured{' '}
-              <span className="text-amber-600">
+              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Creations
               </span>
             </h2>
-            <p className="text-base md:text-lg text-amber-700 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
               Discover unique handmade products from our verified makers
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 mb-16 md:mb-20">
             {featuredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
@@ -133,42 +133,42 @@ export const HomePage: React.FC = () => {
           >
             <Link
               to="/shop"
-              className="inline-flex items-center space-x-2 md:space-x-3 bg-amber-600 hover:bg-amber-700 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl font-semibold transition-all duration-300 group shadow-lg"
+              className="inline-flex items-center space-x-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-10 md:px-12 py-4 md:py-5 rounded-2xl font-semibold transition-all duration-300 group shadow-xl text-lg"
             >
               <span>Explore All Products</span>
-              <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 transition-transform" />
             </Link>
           </motion.div>
         </div>
       </section>
 
       {/* New Features Showcase - Mobile Optimized */}
-      <section className="py-8 md:py-16 bg-white">
+      <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
             {/* Gift Suggester */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 md:p-6 border border-amber-100"
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 md:p-10 border border-blue-200"
             >
-              <div className="bg-amber-600 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-3 md:mb-4">
-                <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center mb-6">
+                <Gift className="w-10 h-10 md:w-12 md:h-12 text-white" />
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-amber-900 mb-2 md:mb-3">
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
                 AI Gift Suggester
               </h3>
-              <p className="text-sm md:text-base text-amber-700 mb-3 md:mb-4 leading-relaxed">
+              <p className="text-base md:text-lg text-slate-600 mb-6 leading-relaxed">
                 Not sure what to gift? Our AI-powered suggester helps you find the perfect handmade gift 
                 based on occasion, budget, and recipient preferences.
               </p>
               <Link
                 to="/gift-suggester"
-                className="inline-flex items-center space-x-2 bg-amber-600 hover:bg-amber-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold transition-all shadow-lg"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 md:px-10 py-3 md:py-4 rounded-xl font-semibold transition-all shadow-lg"
               >
                 <span>Try Gift Suggester</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </Link>
             </motion.div>
 
@@ -177,24 +177,24 @@ export const HomePage: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-4 md:p-6 border border-orange-100"
+              className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-8 md:p-10 border border-emerald-200"
             >
-              <div className="bg-orange-600 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center mb-3 md:mb-4">
-                <Package className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center mb-6">
+                <Package className="w-10 h-10 md:w-12 md:h-12 text-white" />
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-amber-900 mb-2 md:mb-3">
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
                 Custom Hamper Builder
               </h3>
-              <p className="text-sm md:text-base text-amber-700 mb-3 md:mb-4 leading-relaxed">
+              <p className="text-base md:text-lg text-slate-600 mb-6 leading-relaxed">
                 Create personalized gift hampers by combining multiple handmade products. 
                 Perfect for special occasions and corporate gifting.
               </p>
               <Link
                 to="/hamper-builder"
-                className="inline-flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold transition-all shadow-lg"
+                className="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8 md:px-10 py-3 md:py-4 rounded-xl font-semibold transition-all shadow-lg"
               >
                 <span>Build Your Hamper</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
               </Link>
             </motion.div>
           </div>
@@ -202,34 +202,34 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Call to Action - Mobile Optimized */}
-      <section className="py-8 md:py-16 bg-amber-600">
+      <section className="py-16 md:py-24 bg-gradient-to-r from-blue-600 to-indigo-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
               Ready to Find the Perfect Gift?
             </h2>
-            <p className="text-base md:text-lg text-amber-100 mb-4 md:mb-6 leading-relaxed">
+            <p className="text-lg md:text-xl text-blue-100 mb-10 leading-relaxed">
               Join thousands of happy customers who've discovered the joy of giving handmade gifts 
               that truly make a difference.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link
                 to="/shop"
-                className="inline-flex items-center space-x-2 bg-white text-amber-600 px-6 md:px-8 py-3 md:py-4 rounded-2xl font-semibold hover:shadow-xl transition-all"
+                className="inline-flex items-center space-x-2 bg-white text-blue-600 px-10 md:px-12 py-4 md:py-5 rounded-2xl font-semibold hover:shadow-xl transition-all text-lg"
               >
                 <span>Start Shopping</span>
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
               </Link>
               <Link
                 to="/register"
-                className="inline-flex items-center space-x-2 bg-amber-700 hover:bg-amber-800 text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl font-semibold transition-all border-2 border-amber-500"
+                className="inline-flex items-center space-x-2 bg-blue-700 hover:bg-blue-800 text-white px-10 md:px-12 py-4 md:py-5 rounded-2xl font-semibold transition-all border-2 border-blue-500 text-lg"
               >
                 <span>Become a Seller</span>
-                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                <ArrowRight className="w-5 h-5 md:w-6 md:h-6" />
               </Link>
             </div>
           </motion.div>
